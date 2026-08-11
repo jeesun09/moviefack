@@ -1,5 +1,6 @@
 "use client";
 
+import { getImageUrl } from "@/util/helper";
 import { PlayCircle } from "lucide-react";
 import Image from "next/image";
 
@@ -8,10 +9,11 @@ const MovieCard = ({ movie }) => {
     <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
       <div className="relative overflow-hidden rounded-[28px] bg-white/5">
         <Image
-        height={1000}
-        width={1000}
-          src={movie.thumb || movie.backdrop}
-          alt={movie.titleMain || movie.title}
+          height={1000}
+          width={1000}
+          src={getImageUrl(movie.poster_path)}
+          blurDataURL={getImageUrl(movie.backdrop_path)}
+          alt={movie.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
 
@@ -19,18 +21,22 @@ const MovieCard = ({ movie }) => {
 
         <div className="absolute inset-x-0 bottom-0 p-4 text-white">
           <div className="mb-3 flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-white/60">
-            <span>{movie.year || "2026"}</span>
+            <span>{movie.release_date.split("-")[0] || "2026"}</span>
             <span className="rounded-full border border-white/10 bg-white/10 px-2 py-1 text-[10px] uppercase text-white/80">
-              {movie.age || "PG-13"}
+              {movie.adult ? "18+" : "PG-13"}
             </span>
           </div>
 
           <h3 className="text-[0.95rem] font-semibold leading-5 text-white line-clamp-2">
-            {movie.titleMain}
+            {movie.title}
           </h3>
 
           <div className="mt-3 flex items-center justify-between text-[11px] text-white/60">
-            <span>{movie.rating ? `${movie.rating}/10` : "N/A"}</span>
+            <span>
+              {movie.vote_average
+                ? `${movie.vote_average.toFixed(1)}/10`
+                : "N/A"}
+            </span>
             <span>{movie.genre?.[0] || "Movie"}</span>
           </div>
         </div>

@@ -16,6 +16,8 @@ const SectionSlider = ({ title, subtitle, movies }) => {
 
   if (!movies?.length) return null;
 
+  console.log("movies", movies);
+
   return (
     <section className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -63,7 +65,11 @@ const SectionSlider = ({ title, subtitle, movies }) => {
           }, 0);
         }}
         freeMode={{ enabled: true, momentum: true }}
-        autoplay={{ delay: 4800, pauseOnMouseEnter: true, disableOnInteraction: false }}
+        autoplay={{
+          delay: 4800,
+          pauseOnMouseEnter: true,
+          disableOnInteraction: false,
+        }}
         grabCursor
         slidesPerView="auto"
         spaceBetween={18}
