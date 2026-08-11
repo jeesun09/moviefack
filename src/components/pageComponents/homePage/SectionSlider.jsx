@@ -83,7 +83,7 @@ const SectionSlider = ({ title, subtitle, movies }) => {
         {movies.map((movie) => (
           <SwiperSlide
             key={movie.id}
-            className="!w-[212px] sm:!w-[232px] md:!w-[252px] lg:!w-[272px]"
+            className="!w-[212px] sm:!w-[232px] md:!w-[252px] lg:!w-[272px] select-none"
           >
             <MovieCard movie={movie} />
           </SwiperSlide>
