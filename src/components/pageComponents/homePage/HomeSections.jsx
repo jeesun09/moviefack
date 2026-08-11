@@ -1,6 +1,18 @@
 import { getFeaturedActionMovies } from "@/util/api";
 import SectionSlider from "./SectionSlider";
-import { homeSections } from "./sectionsData";
+import {
+  trendingSection,
+  popularSection,
+  topRatedSection,
+  actionAdventureSection,
+  psychologicalThrillersSection,
+  sciFiUniverseSection,
+  horrorNightsSection,
+  familyPicksSection,
+  animationFavoritesSection,
+  dramaCollectionSection,
+  adventurePicksSection,
+} from "./sectionsData";
 
 const HomeSections = async () => {
   const [actionMovies] = await Promise.allSettled([
