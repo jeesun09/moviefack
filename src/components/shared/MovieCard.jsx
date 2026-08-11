@@ -12,6 +12,7 @@ const MovieCard = ({ movie }) => {
           height={1000}
           width={1000}
           src={getImageUrl(movie.poster_path)}
+          placeholder="blur"
           blurDataURL={getImageUrl(movie.backdrop_path)}
           alt={movie.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
