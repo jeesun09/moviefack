@@ -297,7 +297,7 @@ const Banner = () => {
               mainSwiperRef.current = swiper;
             }}
             onSlideChange={(swiper) => {
-              // loop=true হলে realIndex ব্যবহার করা উচিত
+            
               const nextIndex =
                 swiper.realIndex;
 
