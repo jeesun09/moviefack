@@ -110,12 +110,68 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  color: var(--accent-red);
 }
 button{
   cursor: pointer;
 }
 
+.section-nav-button {
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section-nav-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.24);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.section-nav-button:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.4);
+  outline-offset: 3px;
+}
+
+.footer-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.16) 45%, transparent 70%);
+  transform: translateX(-120%);
+  animation: footerSweep 7s linear infinite;
+  pointer-events: none;
+}
+
+.footer-orb::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  border: 1px solid rgba(255,255,255,0.18);
+  opacity: 0.8;
+}
+
+@keyframes footerSweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
 
 ::selection {
   background: var(--primary);
@@ -398,6 +454,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .hero-btn {
