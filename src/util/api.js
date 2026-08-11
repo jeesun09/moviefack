@@ -69,3 +69,30 @@ export const getFeaturedMovies = async () => {
     return fallbackMovies.map(normalizeFallbackMovie);
   }
 };
+
+// Get Action movies list
+export const getFeaturedActionMovies = async () => {
+  const apiUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/api/featured-movies`
+      : "http://localhost:3000/api/featured-action";
+
+  try {
+    const response = await fetch(apiUrl, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return fallbackMovies.map(normalizeFallbackMovie);
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) && data.length
+      ? data
+      : fallbackMovies.map(normalizeFallbackMovie);
+  } catch (error) {
+    console.error("Failed to fetch featured movies:", error);
+
+    return fallbackMovies.map(normalizeFallbackMovie);
+  }
+}

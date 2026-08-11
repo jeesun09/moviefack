@@ -107,11 +107,7 @@ const Banner = () => {
 
   const bannerMovies = movies.map(
     (movie, index) => {
-      const title =
-        movie.title ||
-        movie.original_title ||
-        movie.titleMain ||
-        "Untitled";
+      const title = movie.titleMain + " " + movie.titleSub;
 
       return {
         id: movie.id,
