@@ -28,6 +28,11 @@ const HomeSections = async () => {
         subtitle={"Big worlds, bigger battles and unforgettable journeys."}
         movies={ActionMovies}
       />
+       {/* <SectionSlider
+        title={"Action Movies"}
+        subtitle={"Big worlds, bigger battles and unforgettable journeys."}
+        movies={ActionMovies}
+      /> */}
     </div>
   );
 };
