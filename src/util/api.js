@@ -71,11 +71,11 @@ export const getFeaturedMovies = async () => {
 };
 
 // Get Action movies list
-export const getFeaturedActionMovies = async () => {
+export const getFeaturedActionMovies = async (id) => {
   const apiUrl =
     typeof window !== "undefined"
-      ? `${window.location.origin}/api/featured-movies`
-      : "http://localhost:3000/api/featured-action";
+      ? `${window.location.origin}/api/featured-genre?genreId=${id}`
+      : `http://localhost:3000/api/featured-genre?genreId=${id}`;
 
   try {
     const response = await fetch(apiUrl, {

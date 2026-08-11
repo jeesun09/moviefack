@@ -1,7 +1,12 @@
 import { normalizeTmdbMovie, TMDB_ACCESS_TOKEN, TMDB_API_KEY, TMDB_BASE_URL } from "@/app/constants/config";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req, res) {
+  // Get query params
+  const { searchParams } = new URL(req.url);
+
+  const genreId = searchParams.get("genreId");
+  console.log("genreId", genreId);
   if (!TMDB_ACCESS_TOKEN && !TMDB_API_KEY) {
     return NextResponse.json(fallbackMovies.map(normalizeTmdbMovie), {
       status: 200,
@@ -9,7 +14,7 @@ export async function GET() {
   }
 
   try {
-    const url = new URL(`${TMDB_BASE_URL}/discover/movie?with_genres=28`);
+    const url = new URL(`${TMDB_BASE_URL}/discover/movie?with_genres=${genreId}`);
 
     if (TMDB_API_KEY) {
       url.searchParams.set("api_key", TMDB_API_KEY);

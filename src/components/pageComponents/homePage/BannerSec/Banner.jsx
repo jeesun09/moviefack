@@ -107,7 +107,7 @@ const Banner = () => {
 
   const bannerMovies = movies.map(
     (movie, index) => {
-      const title = movie.titleMain + " " + movie.titleSub;
+      const title = movie.original_title;
 
       return {
         id: movie.id,
@@ -124,9 +124,7 @@ const Banner = () => {
         // DESCRIPTION
         // ------------------------------
 
-        description:
-          movie.overview ||
-          "Discover an unforgettable cinematic experience.",
+        description: movie.overview,
 
         // ------------------------------
         // RATING
@@ -141,9 +139,7 @@ const Banner = () => {
         // YEAR
         // ------------------------------
 
-        year: movie.release_date
-          ? movie.release_date.slice(0, 4)
-          : "N/A",
+        year: movie.release_date ? movie.release_date.slice(0, 4) : "N/A",
 
         // ------------------------------
         // TEMP RUNTIME
@@ -151,7 +147,7 @@ const Banner = () => {
         // Trending API does not return runtime.
         // We will add it later using /movie/{id}
 
-        runtime: "2h 10m",
+        // runtime: "2h 10m",
 
         // ------------------------------
         // TEMP GENRE
@@ -173,26 +169,20 @@ const Banner = () => {
 
         backdrop: getImageUrl(
           movie.backdrop_path || movie.backdrop,
-          "original"
+          "original",
         ),
 
         // ------------------------------
         // POSTER / THUMB
         // ------------------------------
 
-        thumb: getImageUrl(
-          movie.poster_path || movie.thumb,
-          "w500"
-        ),
+        thumb: getImageUrl(movie.poster_path || movie.thumb, "w500"),
 
         // ------------------------------
         // INDEX
         // ------------------------------
 
-        thumbIndex: String(index + 1).padStart(
-          2,
-          "0"
-        ),
+        thumbIndex: String(index + 1).padStart(2, "0"),
 
         // ------------------------------
         // THUMB TITLE
