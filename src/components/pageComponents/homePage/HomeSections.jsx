@@ -33,6 +33,7 @@ const HomeSections = async () => {
         subtitle={"Big worlds, bigger battles and unforgettable journeys."}
         movies={ActionMovies}
       /> */}
+      <div className="h-5000"></div>
     </div>
   );
 };

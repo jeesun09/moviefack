@@ -326,7 +326,7 @@ const Banner = () => {
 
                   {/* CONTENT */}
 
-                  <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-5 pt-22 sm:px-8 sm:pb-9 lg:px-14 lg:pt-8">
+                  <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-5 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
                     <div className="hero-grid mt-auto">
                       <div
                         className="hero-content"
@@ -449,7 +449,7 @@ const Banner = () => {
               THUMBNAIL SLIDER
           ==================================== */}
 
-          <aside className="hero-side absolute bottom-0 right-4 z-20 hidden w-[min(100vw,700px)] md:bottom-6 md:block">
+          <aside className="hero-side absolute bottom-0 right-4 z-20 hidden xxl:w-[50%] lg:w-[50%] md:w-[40%] md:bottom-6 md:block">
             <Swiper
               modules={[
                 FreeMode,
@@ -506,6 +506,9 @@ const Banner = () => {
                 },
 
                 1200: {
+                  slidesPerView: 2,
+                },
+                  1400: {
                   slidesPerView: 3,
                 },
               }}

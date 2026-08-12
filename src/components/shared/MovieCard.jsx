@@ -7,10 +7,10 @@ import Image from "next/image";
 const MovieCard = ({ movie }) => {
   return (
     <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)]">
-      <div className="relative overflow-hidden rounded-[28px] bg-white/5">
+      <div className="relative xxl:min-h-110.25 xl:h-105 lg:h-100 md:h-90 h-70  overflow-hidden rounded-[28px] bg-white/5">
         <Image
-          height={1000}
-          width={1000}
+          height={500}
+          width={500}
           src={getImageUrl(movie.poster_path)}
           placeholder="blur"
           blurDataURL={getImageUrl(movie.backdrop_path)}
