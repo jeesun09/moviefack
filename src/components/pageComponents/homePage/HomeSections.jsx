@@ -1,25 +1,14 @@
 import { getFeaturedActionMovies } from "@/util/api";
 import SectionSlider from "./SectionSlider";
-import {
-  trendingSection,
-  popularSection,
-  topRatedSection,
-  actionAdventureSection,
-  psychologicalThrillersSection,
-  sciFiUniverseSection,
-  horrorNightsSection,
-  familyPicksSection,
-  animationFavoritesSection,
-  dramaCollectionSection,
-  adventurePicksSection,
-} from "./sectionsData";
+
 
 const HomeSections = async () => {
-  const [actionMovies] = await Promise.allSettled([
-    getFeaturedActionMovies(28),
+  const [actionMovies, adventureMovies] = await Promise.allSettled([
+    getFeaturedActionMovies(28),  getFeaturedActionMovies(12)
   ]);
-
+console.log(adventureMovies.value)
   const ActionMovies = actionMovies.value;
+    const AdventureMovies = adventureMovies.value;
   return (
     <div className="space-y-16 px-4 pb-16 pt-12 sm:px-6 lg:px-8">
       {/* Action Movies  */}
@@ -28,11 +17,11 @@ const HomeSections = async () => {
         subtitle={"Big worlds, bigger battles and unforgettable journeys."}
         movies={ActionMovies}
       />
-       {/* <SectionSlider
-        title={"Action Movies"}
+       <SectionSlider
+        title={"Adventure Movies"}
         subtitle={"Big worlds, bigger battles and unforgettable journeys."}
-        movies={ActionMovies}
-      /> */}
+        movies={AdventureMovies}
+      />
       <div className="h-5000"></div>
     </div>
   );
