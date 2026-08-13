@@ -1,9 +1,10 @@
-import React from 'react'
+import MoviesPageComponent from "@/components/pageComponents/movies/MoviesPageComponent";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
+export const metadata = {
+  title: "Movies | Muvi Cinema",
+  description: "Browse all trending movies, blockbusters, and cinema in HD.",
+};
+
+export default function MoviesPage() {
+  return <MoviesPageComponent />;
 }
-
-export default page

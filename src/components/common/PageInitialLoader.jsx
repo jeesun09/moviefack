@@ -1,19 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { M } from "@/app/constants/images";
 
-export default function Loading() {
+export default function PageInitialLoader() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 750);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center bg-background text-text overflow-hidden">
+    <div
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#080808] text-text transition-all duration-500 ${
+        loading
+          ? "opacity-100 pointer-events-auto scale-100"
+          : "opacity-0 pointer-events-none scale-105"
+      }`}
+    >
       {/* Ambient Red Background Glow */}
       <div
-        className="pointer-events-none absolute h-64 w-64 rounded-full bg-primary/15 blur-[120px] animate-pulse"
+        className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-[130px] animate-pulse"
         aria-hidden="true"
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center gap-5">
         {/* Animated Logo Container */}
-        <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/40 bg-surface/90 p-4 shadow-[0_0_35px_rgba(255,59,48,0.35)] transition duration-500 hover:scale-105">
-          <div className="absolute inset-0 rounded-3xl bg-primary/10 blur-md animate-pulse" aria-hidden="true" />
+        <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/40 bg-surface/90 p-4 shadow-[0_0_40px_rgba(255,59,48,0.45)] transition duration-500 animate-[bounce_1.5s_infinite]">
+          <div
+            className="absolute inset-0 rounded-3xl bg-primary/10 blur-md animate-pulse"
+            aria-hidden="true"
+          />
           <Image
             src={M}
             alt="MUVI logo"

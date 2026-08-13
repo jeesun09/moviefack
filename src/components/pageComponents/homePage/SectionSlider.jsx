@@ -19,8 +19,8 @@ const SectionSlider = ({ title, subtitle, movies }) => {
   console.log("movies", movies);
 
   return (
-    <section className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <section className="space-y-7">
+      <div className="flex flex-col mb-8 gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold text-white">{title}</h2>
           <p className="max-w-2xl text-sm text-white/60">{subtitle}</p>

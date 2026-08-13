@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
+
 import { motion, AnimatePresence } from "motion/react";
 import { LOGO, M } from "@/app/constants/images";
 import {
@@ -10,11 +12,11 @@ import {
 } from "lucide-react";
 
 const menus = [
-  { name: "Home",     href: "/",        icon: Home     },
-  { name: "Movies",   href: "/movies",  icon: Film     },
-  { name: "TV Shows", href: "/tv-shows",icon: Tv       },
-  { name: "Series",   href: "/series",  icon: Radio    },
-  { name: "My List",  href: "/my-list", icon: Bookmark },
+  { name: "Home", href: "/", icon: Home },
+  { name: "Movies", href: "/movies", icon: Film },
+  { name: "TV Shows", href: "/tv-shows", icon: Tv },
+  { name: "Series", href: "/series", icon: Radio },
+  { name: "My List", href: "/my-list", icon: Bookmark },
 ];
 
 const navContainer = {
@@ -51,10 +53,18 @@ const panelItemVariants = {
   }),
 };
 
+import SearchModal from "./SearchModal";
+
+import { useAuth } from "@/context/AuthContext";
+import { LogOut } from "lucide-react";
+
 const Header = () => {
+  const { user, logout } = useAuth();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isHidden,   setIsHidden]   = React.useState(false);
   const [menuOpen,   setMenuOpen]   = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
   const lastScrollY = React.useRef(0);
 
   React.useEffect(() => {
@@ -86,22 +96,43 @@ const Header = () => {
               </Link>
             </motion.div>
             <motion.div variants={navContainer} initial="hidden" animate="show" className="flex items-center gap-3">
-              {menus.map((menu) => (
-                <motion.div key={menu.name} variants={navItem} whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
-                  <Link href={menu.href} className="text-[16px] px-2 py-1 font-bold text-text transition-colors duration-200 hover:text-primary hover:bg-background/80 rounded-full block">
-                    {menu.name}
-                  </Link>
-                </motion.div>
-              ))}
+              {menus.map((menu) => {
+                const isActive = pathname === menu.href;
+                return (
+                  <motion.div key={menu.name} variants={navItem} whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      href={menu.href}
+                      className={`text-[15px] px-3.5 py-1.5 font-bold transition-all duration-200 rounded-full block ${isActive
+                          ? "text-primary bg-background/90 border border-primary/30 shadow-[0_0_15px_rgba(255,59,48,0.3)]"
+                          : "text-text hover:text-primary hover:bg-background/80"
+                        }`}
+                    >
+                      {menu.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
           {/* action buttons */}
           <div className={`flex items-center py-1.5 px-2.5 backdrop-blur-xl gap-2 rounded-full ${isScrolled ? "activeNav" : ""}`}>
-            <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.85 }} className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background" aria-label="Search">
+            <motion.button
+              onClick={() => setSearchOpen(true)}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.85 }}
+              className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background"
+              aria-label="Search"
+            >
               <Search className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
             </motion.button>
-            <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.85 }}  className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background" aria-label="Menu">
-              <User className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
+            <motion.button
+              onClick={() => setMenuOpen((v) => !v)}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.85 }}
+              className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background"
+              aria-label="Menu"
+            >
+              <User className={`w-4 h-4 transition-colors ${user ? "text-primary" : "text-text group-hover:text-primary"}`} />
             </motion.button>
           </div>
         </div>
@@ -112,11 +143,16 @@ const Header = () => {
             <Image src={LOGO} alt="logo" unoptimized width={100} height={100} className="w-full h-full object-contain" />
           </Link>
           <div className="flex items-center gap-2">
-            <motion.button whileTap={{ scale: 0.85 }} className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background" aria-label="Profile">
-              <User className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              onClick={() => setSearchOpen(true)}
+              className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
             </motion.button>
             <motion.button whileTap={{ scale: 0.85 }} onClick={() => setMenuOpen((v) => !v)} className="w-8 h-8 flex items-center justify-center group rounded-lg bg-background" aria-label="Open menu">
-               {menuOpen ? (
+              {menuOpen ? (
                 <X className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
               ) : (
                 <Menu className="w-4 h-4 text-text transition-colors group-hover:text-primary" />
@@ -142,11 +178,15 @@ const Header = () => {
               {/* user section */}
               <div className="flex items-center gap-3 px-4 py-4 border-b border-border/30">
                 <div className="w-10 h-10 rounded-full bg-surface flex items-center justify-center border border-border/50 shrink-0">
-                  <User className="w-5 h-5 text-text-muted" />
+                  <User className={`w-5 h-5 ${user ? "text-primary" : "text-text-muted"}`} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-text font-semibold text-sm leading-tight">Guest</span>
-                  <span className="text-text-muted text-xs">Not signed in</span>
+                  <span className="text-text font-semibold text-sm leading-tight">
+                    {user ? user.name : "Guest"}
+                  </span>
+                  <span className="text-text-muted text-xs">
+                    {user ? user.email : "Not signed in"}
+                  </span>
                 </div>
               </div>
 
@@ -156,6 +196,10 @@ const Header = () => {
                 variants={panelItemVariants}
                 initial="hidden"
                 animate="show"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setSearchOpen(true);
+                }}
                 whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
                 className="w-full flex items-center gap-3 px-4 py-3 border-b border-border transition-colors"
               >
@@ -168,15 +212,19 @@ const Header = () => {
               <div className="py-1">
                 {menus.map((menu, i) => {
                   const Icon = menu.icon;
+                  const isActive = pathname === menu.href;
                   return (
                     <motion.div key={menu.name} custom={i + 1} variants={panelItemVariants} initial="hidden" animate="show">
                       <Link
                         href={menu.href}
                         onClick={() => setMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors group"
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors group ${isActive ? "bg-primary/10 border-l-2 border-primary" : "hover:bg-white/5"
+                          }`}
                       >
-                        <Icon className="w-4 h-4 text-text-muted group-hover:text-primary transition-colors" />
-                        <span className="text-text/50 text-[15px] font-medium flex-1">{menu.name}</span>
+                        <Icon className={`w-4 h-4 transition-colors ${isActive ? "text-primary" : "text-text-muted group-hover:text-primary"}`} />
+                        <span className={`text-[15px] font-medium flex-1 ${isActive ? "text-primary font-semibold" : "text-text/70"}`}>
+                          {menu.name}
+                        </span>
                         <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>
                     </motion.div>
@@ -186,30 +234,43 @@ const Header = () => {
 
               {/* bottom actions */}
               <div className="border-t border-border/30 py-1">
-                <motion.div custom={menus.length + 1} variants={panelItemVariants} initial="hidden" animate="show">
-                  <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors group">
-                    <Settings className="w-4 h-4 text-text-muted group-hover:text-primary transition-colors" />
-                    <span className="text-text text-[15px] font-medium flex-1 text-left">Settings</span>
-                    <ChevronRight className="w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </button>
-                </motion.div>
-                <motion.div custom={menus.length + 2} variants={panelItemVariants} initial="hidden" animate="show">
-                  <Link
-                    href="/sign-in"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors group"
-                  >
-                    <LogIn className="w-4 h-4 text-primary" />
-                    <span className="text-primary text-[15px] font-semibold flex-1">Sign in / Create account</span>
-                  </Link>
-                </motion.div>
+                {user ? (
+                  <motion.div custom={menus.length + 2} variants={panelItemVariants} initial="hidden" animate="show">
+                    <button
+                      onClick={() => {
+                        logout();
+                        setMenuOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors group"
+                    >
+                      <LogOut className="w-4 h-4 text-rose-500" />
+                      <span className="text-rose-500 text-[15px] font-semibold flex-1 text-left">Sign Out</span>
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div custom={menus.length + 2} variants={panelItemVariants} initial="hidden" animate="show">
+                    <Link
+                      href="/sign-in"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors group"
+                    >
+                      <LogIn className="w-4 h-4 text-primary" />
+                      <span className="text-primary text-[15px] font-semibold flex-1">Sign in / Create account</span>
+                    </Link>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+
+
+      {/* Search Modal Popup */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 };
 
 export default Header;
+

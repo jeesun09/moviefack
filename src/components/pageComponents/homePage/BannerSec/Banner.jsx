@@ -6,7 +6,10 @@ import {
   ChevronLeft,
   ChevronRight,
   PlayCircleIcon,
+  BookmarkIcon,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -31,6 +34,8 @@ import "swiper/css/thumbs";
 import BannerSkeleton from "./BannerSkeleton";
 
 const Banner = () => {
+  const { addToWishlist } = useAuth();
+
 
   // ==========================================
   // SWIPER REFS
@@ -413,7 +418,7 @@ const Banner = () => {
 
                       {/* ACTIONS */}
 
-                      <div className="hero-actions">
+                      <div className="hero-actions flex items-center gap-3">
                         <Button
                           icon={PlayCircleIcon}
                           iconPosition="right"
@@ -423,13 +428,16 @@ const Banner = () => {
                           watch now
                         </Button>
 
-                        <Button
-                          variant="secondary"
-                          size="md"
+                        <button
+                          type="button"
+                          onClick={() => addToWishlist(movie)}
+                          className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white"
                         >
-                          More info
-                        </Button>
+                          <BookmarkIcon className="h-4 w-4" />
+                          <span>Wishlist</span>
+                        </button>
                       </div>
+
                     </div>
                   </div>
                 </div>
