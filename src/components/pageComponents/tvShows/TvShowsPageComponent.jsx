@@ -81,13 +81,13 @@ const TvShowsPageComponent = () => {
       {/* TV Shows Grid */}
       <div className="mx-auto max-w-[1600px]">
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
             {Array.from({ length: 10 }).map((_, idx) => (
               <MovieCardSkeleton key={`tv-skel-${idx}`} />
             ))}
           </div>
         ) : shows.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
             {shows.map((item) => (
               <MovieCard key={item.id} movie={item} />
             ))}

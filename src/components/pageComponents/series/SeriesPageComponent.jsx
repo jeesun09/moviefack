@@ -68,8 +68,8 @@ const SeriesPageComponent = () => {
               key={genre.id}
               onClick={() => setActiveGenre(genre.id)}
               className={`shrink-0 rounded-full px-5 py-2 text-xs font-medium tracking-wide transition-all duration-300 ${activeGenre === genre.id
-                  ? "bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                  : "border border-white/10 bg-white/5 text-white/70 hover:border-white/25 hover:text-white"
+                ? "bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                : "border border-white/10 bg-white/5 text-white/70 hover:border-white/25 hover:text-white"
                 }`}
             >
               {genre.name}
@@ -81,13 +81,13 @@ const SeriesPageComponent = () => {
       {/* Series Grid */}
       <div className="mx-auto max-w-[1600px]">
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
             {Array.from({ length: 10 }).map((_, idx) => (
               <MovieCardSkeleton key={`series-skel-${idx}`} />
             ))}
           </div>
         ) : series.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
             {series.map((item) => (
               <MovieCard key={item.id} movie={item} />
             ))}
