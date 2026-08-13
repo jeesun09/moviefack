@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, Film } from "lucide-react";
 
-const VideoModal = ({ isOpen, onClose, id, title }) => {
+const SeriesModal = ({ isOpen, onClose, id, season, episode, title }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -46,9 +46,8 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
             {/* Video Player iFrame Container */}
             <div className="relative w-full aspect-video bg-black">
               {id ? (
-             
                 <iframe
-                  src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`}
+                  src={`https://www.vidking.net/embed/tv/${id}/${season}/${episode}?color=e50914&autoPlay=true`}
                   width="100%"
                   height="600"
                   allowFullScreen
@@ -68,4 +67,4 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
   );
 };
 
-export default VideoModal;
+export default SeriesModal;
