@@ -157,11 +157,10 @@ const MovieDetailClientComponent = ({
               {/* Wishlist Button */}
               <button
                 onClick={() => addToWishlist(movie)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
-                  isSaved
-                    ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                    : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                }`}
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${isSaved
+                  ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                  : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                  }`}
               >
                 <Bookmark
                   className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
@@ -196,11 +195,11 @@ const MovieDetailClientComponent = ({
 
       {/* ── CAST SECTION SLIDER ── */}
       {cast && cast.length > 0 && (
-        <section className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 py-12 space-y-6">
+        <section className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 lg:py-12 py-8 space-y-6">
           <h2 className="text-xl sm:text-2xl font-bold text-white tracking-wide">
             Top Cast & Crew
           </h2>
-          <div className="flex items-center gap-4 overflow-x-auto pb-4 scrollbar-none">
+          <div className="flex items-center gap-4 overflow-x-auto pb-0 scrollbar-none">
             {cast.map((actor) => {
               const actorPhoto = actor.profile_path
                 ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
@@ -241,7 +240,7 @@ const MovieDetailClientComponent = ({
       {/* ── MORE LIKE THIS (SIMILAR MOVIES) ── */}
       {similarMovies && similarMovies.length > 0 && (
         <div className="space-y-16 px-4 pb-20 pt-12 sm:px-6 lg:px-12">
-          <section className="py-8">
+          <section className="">
             <SectionSlider
               title="More Like This"
               subtitle="Recommended movies and shows tailored for fans of this title."

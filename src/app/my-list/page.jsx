@@ -28,7 +28,7 @@ export default function MyListPage() {
       <div className="mx-auto max-w-[1920px] pt-10">
         {user ? (
           wishlist.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-6">
               {wishlist.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
