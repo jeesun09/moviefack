@@ -22,6 +22,7 @@ import {
   ChevronDown,
   Check,
 } from "lucide-react";
+import SeriesModal from "@/components/common/SeriesModal";
 
 const SeriesDetailClientComponent = ({
   series,
@@ -51,7 +52,10 @@ const SeriesDetailClientComponent = ({
   // Close season dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (seasonDropdownRef.current && !seasonDropdownRef.current.contains(e.target)) {
+      if (
+        seasonDropdownRef.current &&
+        !seasonDropdownRef.current.contains(e.target)
+      ) {
         setIsSeasonOpen(false);
       }
     };
@@ -63,7 +67,11 @@ const SeriesDetailClientComponent = ({
   useEffect(() => {
     let isMounted = true;
     const loadSeasonData = async () => {
-      if (selectedSeason === 1 && initialEpisodes && initialEpisodes.length > 0) {
+      if (
+        selectedSeason === 1 &&
+        initialEpisodes &&
+        initialEpisodes.length > 0
+      ) {
         setEpisodes(initialEpisodes);
         return;
       }
@@ -90,13 +98,13 @@ const SeriesDetailClientComponent = ({
   const backdropSrc =
     getImageUrl(
       series.backdrop_path || series.backdrop || series.poster_path,
-      "original"
+      "original",
     ) || "https://image.tmdb.org/t/p/original/r013C8Me2bZ0pUi0OWJRh0h7MzT.jpg";
 
   const posterSrc =
     getImageUrl(
       series.poster_path || series.thumb || series.backdrop_path,
-      "w500"
+      "w500",
     ) || "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg";
 
   const titleMain =
@@ -118,7 +126,7 @@ const SeriesDetailClientComponent = ({
 
   const seasonsList = Array.from(
     { length: series.number_of_seasons || 3 },
-    (_, i) => i + 1
+    (_, i) => i + 1,
   );
 
   const handleShare = () => {
@@ -307,7 +315,10 @@ const SeriesDetailClientComponent = ({
               <span className="text-[10px] uppercase font-bold text-white/40 tracking-wider">
                 Season
               </span>
-              <div className="relative inline-block min-w-44" ref={seasonDropdownRef}>
+              <div
+                className="relative inline-block min-w-44"
+                ref={seasonDropdownRef}
+              >
                 {/* Dropdown Button Trigger */}
                 <button
                   type="button"
@@ -544,16 +555,20 @@ const SeriesDetailClientComponent = ({
       />
 
       {/* Series / Episode Stream Video Modal */}
-      <VideoModal
-        isOpen={isVideoOpen}
-        onClose={() => setIsVideoOpen(false)}
-        id={series.id}
-        title={
-          activeEpisode
-            ? `${titleMain} - S${activeEpisode.season_number || selectedSeason}E${activeEpisode.episode_number}: ${activeEpisode.name}`
-            : titleMain
-        }
-      />
+      {isVideoOpen && activeEpisode && selectedSeason && (
+        <SeriesModal
+          isOpen={isVideoOpen}
+          onClose={() => setIsVideoOpen(false)}
+          id={series.id}
+          season={activeEpisode.season_number || selectedSeason}
+          episode={activeEpisode.episode_number}
+          title={
+            activeEpisode
+              ? `${titleMain} - S${activeEpisode.season_number || selectedSeason}E${activeEpisode.episode_number}: ${activeEpisode.name}`
+              : titleMain
+          }
+        />
+      )}
 
       {/* Share Toast Feedback */}
       {shareToast && (

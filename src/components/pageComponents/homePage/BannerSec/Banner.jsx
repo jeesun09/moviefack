@@ -32,9 +32,11 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
 import BannerSkeleton from "./BannerSkeleton";
+import { useRouter } from "next/navigation";
 
 const Banner = () => {
   const { addToWishlist } = useAuth();
+  const router = useRouter();
 
 
   // ==========================================
@@ -236,6 +238,15 @@ const Banner = () => {
     );
   }
 
+  // =========================================
+  // Handle watch now click
+  // =========================================
+
+  const handleWatchNow = (movie) => {
+    const url = `/movie/${movie.id}`;
+    router.push(url);
+  };
+
   // ==========================================
   // MAIN UI
   // ==========================================
@@ -424,6 +435,7 @@ const Banner = () => {
                           iconPosition="right"
                           variant="primary"
                           size="md"
+                          onClick={() => handleWatchNow(movie)}
                         >
                           watch now
                         </Button>

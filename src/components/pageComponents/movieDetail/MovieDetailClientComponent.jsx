@@ -28,7 +28,6 @@ const MovieDetailClientComponent = ({
   const [shareToast, setShareToast] = useState(false);
   const { addToWishlist, isMovieInWishlist } = useAuth();
   const isSaved = isMovieInWishlist(movie.id);
-  console.log("movie", movie);
 
   const backdropSrc =
     getImageUrl(

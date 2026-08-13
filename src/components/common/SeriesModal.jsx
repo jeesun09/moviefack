@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, Film } from "lucide-react";
 
-const VideoModal = ({ isOpen, onClose, id, title }) => {
+const SeriesModal = ({ isOpen, onClose, id, season, episode, title }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -22,7 +22,7 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
-            className="relative z-10 w-full max-w-[1024px] overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
+            className="relative z-10 w-full max-w-4xl overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
           >
             {/* Top Bar */}
             <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
@@ -46,9 +46,8 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
             {/* Video Player iFrame Container */}
             <div className="relative w-full aspect-video bg-black">
               {id ? (
-
                 <iframe
-                  src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`}
+                  src={`https://www.vidking.net/embed/tv/${id}/${season}/${episode}?color=e50914&autoPlay=true`}
                   width="100%"
                   height="600"
                   allowFullScreen
@@ -68,4 +67,4 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
   );
 };
 
-export default VideoModal;
+export default SeriesModal;

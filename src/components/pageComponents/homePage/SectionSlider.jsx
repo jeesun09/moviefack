@@ -16,7 +16,6 @@ const SectionSlider = ({ title, subtitle, movies }) => {
 
   if (!movies?.length) return null;
 
-  console.log("movies", movies);
 
   return (
     <section className="space-y-7">
