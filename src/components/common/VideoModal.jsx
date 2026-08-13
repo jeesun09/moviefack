@@ -48,13 +48,7 @@ const VideoModal = ({ isOpen, onClose, id, title }) => {
             {/* Video Player iFrame Container */}
             <div className="relative w-full aspect-video bg-black">
               {id ? (
-                // <iframe
-                //   src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&rel=0`}
-                //   title={title || "Movie Trailer"}
-                //   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                //   allowFullScreen
-                //   className="h-full w-full border-0"
-                // />
+             
                 <iframe
                   src={`https://www.vidking.net/embed/movie/${id}?color=e50914&autoPlay=true`}
                   width="100%"

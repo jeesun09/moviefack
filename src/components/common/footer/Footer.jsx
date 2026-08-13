@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { M } from "@/constants/images";
+import { Info } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -36,6 +37,14 @@ const Footer = () => {
           Stream unlimited trending movies, blockbuster cinema, and exclusive TV
           series in Ultra HD.
         </p>
+
+        {/* Educational Purpose Disclaimer */}
+        <div className="mt-2 flex max-w-lg items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/70 backdrop-blur-md">
+          <Info className="h-4 w-4 shrink-0 text-primary" />
+          <span>
+            <strong className="font-medium text-white">Educational Notice:</strong> This website is built strictly for educational purposes and non-commercial project demonstration.
+          </span>
+        </div>
 
         {/* Copyright Bar */}
         <div className="pt-2 text-[11px] uppercase tracking-[0.25em] text-white/40">
