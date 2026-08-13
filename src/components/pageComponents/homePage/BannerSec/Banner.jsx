@@ -335,7 +335,7 @@ const Banner = () => {
 
                 {/* CONTENT */}
 
-                <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-5 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
+                <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-12 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
                   <div className="hero-grid mt-auto">
                     <div
                       className="hero-content"
@@ -590,7 +590,7 @@ const Banner = () => {
             aria-label="Carousel controls"
           >
             <Button
-              className="w-10 h-10! p-0! flex items-center justify-center rounded-full"
+              className="w-10 h-10! p-0! flex items-center justify-center rounded-full hover:bg-primary hover:text-white"
               variant="icon"
               aria-label="Previous movie"
               onClick={() =>
@@ -601,7 +601,7 @@ const Banner = () => {
             </Button>
 
             <Button
-              className="w-10 h-10! p-0! flex items-center justify-center rounded-full"
+              className="w-10 h-10! p-0! flex items-center justify-center rounded-full hover:bg-primary hover:text-white"
               variant="icon"
               aria-label="Next movie"
               onClick={() =>

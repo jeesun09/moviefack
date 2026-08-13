@@ -31,14 +31,14 @@ const SectionSlider = ({ title, subtitle, movies }) => {
           </span>
           <button
             ref={setPrevEl}
-            className="section-nav-button"
+            className="section-nav-button hover:bg-primary hover:text-white"
             aria-label="Previous section"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             ref={setNextEl}
-            className="section-nav-button"
+            className="section-nav-button hover:bg-primary hover:text-white"
             aria-label="Next section"
           >
             <ChevronRight className="h-4 w-4" />
