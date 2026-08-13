@@ -1,34 +1,30 @@
 import { normalizeTmdbMovie, TMDB_ACCESS_TOKEN, TMDB_API_KEY, TMDB_BASE_URL } from "@/app/constants/config";
+import { bannerMovies as fallbackMovies } from "@/components/movieData";
 import { NextResponse } from "next/server";
 
-export async function GET(req, res) {
-  // Get query params
-  const { searchParams } = new URL(req.url);
+const apiKey = TMDB_API_KEY ? TMDB_API_KEY.trim().replace(/^['"]|['"]$/g, "") : "";
+const token = TMDB_ACCESS_TOKEN ? TMDB_ACCESS_TOKEN.trim().replace(/^['"]|['"]$/g, "") : "";
 
-  const genreId = searchParams.get("genreId");
-  console.log("genreId", genreId);
-  if (!TMDB_ACCESS_TOKEN && !TMDB_API_KEY) {
-    return NextResponse.json(fallbackMovies.map(normalizeTmdbMovie), {
-      status: 200,
-    });
-  }
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const genreId = searchParams.get("genreId") || "28";
 
   try {
     const url = new URL(`${TMDB_BASE_URL}/discover/movie?with_genres=${genreId}`);
 
-    if (TMDB_API_KEY) {
-      url.searchParams.set("api_key", TMDB_API_KEY);
+    if (apiKey) {
+      url.searchParams.set("api_key", apiKey);
     }
 
     const headers = {
       "Content-Type": "application/json",
     };
 
-    if (TMDB_ACCESS_TOKEN && !TMDB_API_KEY) {
-      headers.Authorization = `Bearer ${TMDB_ACCESS_TOKEN}`;
+    if (token && !apiKey) {
+      headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       headers,
       next: { revalidate: 3600 },
     });
@@ -54,3 +50,5 @@ export async function GET(req, res) {
     });
   }
 }
+
+

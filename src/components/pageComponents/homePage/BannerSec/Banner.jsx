@@ -28,7 +28,10 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
+import BannerSkeleton from "./BannerSkeleton";
+
 const Banner = () => {
+
   // ==========================================
   // SWIPER REFS
   // ==========================================
@@ -107,24 +110,28 @@ const Banner = () => {
 
   const bannerMovies = movies.map(
     (movie, index) => {
-      const title = movie.original_title;
+      const titleMain = movie.titleMain || movie.title || movie.original_title || movie.name || "Untitled";
+      const titleSub = movie.titleSub || "";
+      const fullTitle = titleSub ? `${titleMain} ${titleSub}`.trim() : titleMain;
 
       return {
-        id: movie.id,
+        id: movie.id || index + 1,
 
         // ------------------------------
         // TITLE
         // ------------------------------
 
-        titleMain: title,
-
-        titleSub: "",
+        titleMain: titleMain,
+        titleSub: titleSub,
 
         // ------------------------------
         // DESCRIPTION
         // ------------------------------
 
-        description: movie.overview,
+        description:
+          movie.overview ||
+          movie.description ||
+          "Discover an unforgettable cinematic experience.",
 
         // ------------------------------
         // RATING
@@ -133,35 +140,37 @@ const Banner = () => {
         rating:
           typeof movie.vote_average === "number"
             ? movie.vote_average.toFixed(1)
-            : "N/A",
+            : movie.rating
+              ? String(movie.rating)
+              : "8.0",
 
         // ------------------------------
         // YEAR
         // ------------------------------
 
-        year: movie.release_date ? movie.release_date.slice(0, 4) : "N/A",
+        year: movie.release_date
+          ? movie.release_date.slice(0, 4)
+          : movie.year || "2026",
 
         // ------------------------------
-        // TEMP RUNTIME
-        // ------------------------------
-        // Trending API does not return runtime.
-        // We will add it later using /movie/{id}
-
-        // runtime: "2h 10m",
-
-        // ------------------------------
-        // TEMP GENRE
-        // ------------------------------
-        // Trending API gives genre_ids.
-        // We can map these later.
-
-        genre: ["Movie"],
-
-        // ------------------------------
-        // TEMP AGE
+        // RUNTIME
         // ------------------------------
 
-        age: "PG-13",
+        runtime: movie.runtime || "1h 55m",
+
+        // ------------------------------
+        // GENRE
+        // ------------------------------
+
+        genre: Array.isArray(movie.genre) && movie.genre.length
+          ? movie.genre
+          : ["Action", "Sci-Fi"],
+
+        // ------------------------------
+        // AGE
+        // ------------------------------
+
+        age: movie.age || "PG-13",
 
         // ------------------------------
         // BACKDROP
@@ -176,7 +185,10 @@ const Banner = () => {
         // POSTER / THUMB
         // ------------------------------
 
-        thumb: getImageUrl(movie.poster_path || movie.thumb, "w500"),
+        thumb: getImageUrl(
+          movie.poster_path || movie.thumb || movie.backdrop_path || movie.backdrop,
+          "w500",
+        ),
 
         // ------------------------------
         // INDEX
@@ -188,7 +200,7 @@ const Banner = () => {
         // THUMB TITLE
         // ------------------------------
 
-        thumbLabel: title,
+        thumbLabel: movie.thumbLabel || fullTitle,
       };
     }
   );
@@ -198,29 +210,10 @@ const Banner = () => {
   // ==========================================
 
   if (isLoading) {
-    return (
-      <section className="movie-hero relative h-dvh w-full overflow-hidden bg-background">
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-background">
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-white/5">
-              <div
-                className="absolute inset-1 animate-spin rounded-full border-2 border-transparent border-t-[#ff6b5d] border-r-[#f59e0b]"
-                aria-hidden="true"
-              />
-
-              <span className="relative text-lg font-bold tracking-[0.2em] text-white">
-                M
-              </span>
-            </div>
-
-            <p className="text-[0.7rem] uppercase tracking-[0.42em] text-white/60">
-              Loading movies
-            </p>
-          </div>
-        </div>
-      </section>
-    );
+    return <BannerSkeleton />;
   }
+
+
 
   // ==========================================
   // EMPTY / ERROR STATE
@@ -250,354 +243,353 @@ const Banner = () => {
 
       <>
         <Swiper
-            modules={[
-              Autoplay,
-              EffectFade,
-              Navigation,
-              Thumbs,
-            ]}
-            className="hero-main-swiper h-full w-full"
-            speed={1100}
-            loop={true}
-            rewind={true}
-            observer={true}
-            observeParents={true}
-            effect="fade"
-            fadeEffect={{
-              crossFade: true,
-            }}
-            autoplay={{
-              delay: 5200,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            navigation={false}
-            thumbs={
-              thumbsSwiper
-                ? {
-                    swiper: thumbsSwiper,
-                  }
-                : undefined
-            }
-            onSwiper={(swiper) => {
-              mainSwiperRef.current = swiper;
-            }}
-            onSlideChange={(swiper) => {
-            
-              const nextIndex =
-                swiper.realIndex;
-
-              setActiveIndex(nextIndex);
-
-              if (
-                thumbsSwiperRef.current &&
-                thumbsSwiperRef.current
-                  .realIndex !== nextIndex
-              ) {
-                thumbsSwiperRef.current.slideTo(
-                  nextIndex
-                );
+          modules={[
+            Autoplay,
+            EffectFade,
+            Navigation,
+            Thumbs,
+          ]}
+          className="hero-main-swiper h-full w-full"
+          speed={1100}
+          loop={true}
+          rewind={true}
+          observer={true}
+          observeParents={true}
+          effect="fade"
+          fadeEffect={{
+            crossFade: true,
+          }}
+          autoplay={{
+            delay: 5200,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          navigation={false}
+          thumbs={
+            thumbsSwiper
+              ? {
+                swiper: thumbsSwiper,
               }
-            }}
-          >
-            {/* ==================================
+              : undefined
+          }
+          onSwiper={(swiper) => {
+            mainSwiperRef.current = swiper;
+          }}
+          onSlideChange={(swiper) => {
+
+            const nextIndex =
+              swiper.realIndex;
+
+            setActiveIndex(nextIndex);
+
+            if (
+              thumbsSwiperRef.current &&
+              thumbsSwiperRef.current
+                .realIndex !== nextIndex
+            ) {
+              thumbsSwiperRef.current.slideTo(
+                nextIndex
+              );
+            }
+          }}
+        >
+          {/* ==================================
                 MAIN SLIDES
             ================================== */}
 
-            {bannerMovies.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <article className="hero-slide relative h-full w-full">
-                  {/* BACKDROP */}
+          {bannerMovies.map((movie) => (
+            <SwiperSlide key={movie.id}>
+              <article className="hero-slide relative h-full w-full">
+                {/* BACKDROP */}
 
-                  <div
-                    className="hero-backdrop absolute inset-0"
-                    style={{
-                      backgroundImage: `url(${movie.backdrop})`,
-                    }}
-                    aria-hidden="true"
-                  />
+                <div
+                  className="hero-backdrop absolute inset-0"
+                  style={{
+                    backgroundImage: `url(${movie.backdrop})`,
+                  }}
+                  aria-hidden="true"
+                />
 
-                  {/* OVERLAY */}
+                {/* OVERLAY */}
 
-                  <div
-                    className="hero-overlay absolute inset-0"
-                    aria-hidden="true"
-                  />
+                <div
+                  className="hero-overlay absolute inset-0"
+                  aria-hidden="true"
+                />
 
-                  {/* CONTENT */}
+                {/* CONTENT */}
 
-                  <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-5 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
-                    <div className="hero-grid mt-auto">
-                      <div
-                        className="hero-content"
-                        data-content
-                      >
-                        {/* TODAY */}
-
-                        <div className="hero-day">
-                          <span
-                            className="hero-day-dot"
-                            aria-hidden="true"
-                          />
-
-                          <span>Today</span>
-                        </div>
-
-                        {/* TITLE */}
-
-                        <div className="hero-title-wrap">
-                          <p className="hero-index">
-                            <span className="hero-index-num">
-                              {movie.thumbIndex}
-                            </span>
-                          </p>
-
-                          <h1 className="hero-title">
-                            <span>
-                              {movie.titleMain}
-                            </span>
-
-                            {movie.titleSub && (
-                              <span>
-                                {movie.titleSub}
-                              </span>
-                            )}
-                          </h1>
-                        </div>
-
-                        {/* STARS */}
-
-                        <div
-                          className="hero-stars"
-                          aria-label={`Rated ${movie.rating} out of 10`}
-                        >
-                          {Array.from({
-                            length: 5,
-                          }).map((_, idx) => (
-                            <span
-                              key={`${movie.id}-star-${idx}`}
-                            >
-                              ★
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* META */}
-
-                        <div className="hero-meta">
-                          <p>
-                            Genre:&nbsp;
-
-                            <span>
-                              {movie.genre.join(
-                                ", "
-                              )}
-                            </span>
-                          </p>
-
-                          <span className="hero-tag">
-                            {movie.year}
-                          </span>
-
-                          <span className="hero-tag">
-                            {movie.runtime}
-                          </span>
-
-                          <span className="hero-tag">
-                            IMDb {movie.rating}
-                          </span>
-
-                          <span className="hero-tag">
-                            {movie.age}
-                          </span>
-                        </div>
-
-                        {/* DESCRIPTION */}
-
-                        <p className="hero-description">
-                          {movie.description}
-                        </p>
-
-                        {/* ACTIONS */}
-
-                        <div className="hero-actions">
-                          <Button
-                            icon={PlayCircleIcon}
-                            iconPosition="right"
-                            variant="primary"
-                            size="md"
-                          >
-                            watch now
-                          </Button>
-
-                          <Button
-                            variant="secondary"
-                            size="md"
-                          >
-                            More info
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* ====================================
-              THUMBNAIL SLIDER
-          ==================================== */}
-
-          <aside className="hero-side absolute bottom-0 right-4 z-20 hidden xxl:w-[50%] lg:w-[50%] md:w-[40%] md:bottom-6 md:block">
-            <Swiper
-              modules={[
-                FreeMode,
-                Thumbs,
-              ]}
-              className="hero-thumbs-swiper"
-              loop={true}
-              freeMode={{
-                enabled: true,
-                momentum: true,
-              }}
-              watchSlidesProgress={true}
-              slideToClickedSlide={true}
-              observer={true}
-              observeParents={true}
-              grabCursor={true}
-              allowTouchMove={true}
-              onSwiper={(swiper) => {
-                setThumbsSwiper(swiper);
-
-                thumbsSwiperRef.current =
-                  swiper;
-              }}
-              onClick={(swiper) => {
-                if (
-                  typeof swiper.clickedIndex ===
-                  "number"
-                ) {
-                  const clickedIndex =
-                    swiper.clickedIndex;
-
-                  setActiveIndex(
-                    clickedIndex
-                  );
-
-                  mainSwiperRef.current?.slideToLoop(
-                    clickedIndex
-                  );
-                }
-              }}
-              spaceBetween={14}
-              slidesPerView={3}
-              breakpoints={{
-                420: {
-                  slidesPerView: 2,
-                },
-
-                640: {
-                  slidesPerView: 2,
-                },
-
-                900: {
-                  slidesPerView: 3,
-                },
-
-                1200: {
-                  slidesPerView: 2,
-                },
-                  1400: {
-                  slidesPerView: 3,
-                },
-              }}
-            >
-              {bannerMovies.map(
-                (thumbMovie, idx) => (
-                  <SwiperSlide
-                    className="!h-auto"
-                    key={`thumb-${thumbMovie.id}`}
-                  >
-                    <button
-                      type="button"
-                      className={`hero-thumb group relative rounded-lg ${
-                        activeIndex === idx
-                          ? "active"
-                          : ""
-                      }`}
-                      onClick={() =>
-                        mainSwiperRef.current?.slideToLoop(
-                          idx
-                        )
-                      }
-                      aria-label={`Show ${thumbMovie.thumbLabel}`}
+                <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-5 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
+                  <div className="hero-grid mt-auto">
+                    <div
+                      className="hero-content"
+                      data-content
                     >
-                      {/* INDEX */}
+                      {/* TODAY */}
 
-                      <p className="hero-thumb-index absolute top-0 z-5 text-[2.5rem]">
-                        {thumbMovie.thumbIndex}
-                      </p>
+                      <div className="hero-day">
+                        <span
+                          className="hero-day-dot"
+                          aria-hidden="true"
+                        />
 
-                      {/* THUMB IMAGE */}
-
-                      <span
-                        className="hero-thumb-bg absolute inset-0"
-                        style={{
-                          backgroundImage: `url(${thumbMovie.thumb})`,
-                        }}
-                        aria-hidden="true"
-                      />
-
-                      {/* OVERLAY */}
-
-                      <span
-                        className="hero-thumb-overlay absolute inset-0"
-                        aria-hidden="true"
-                      />
+                        <span>Today</span>
+                      </div>
 
                       {/* TITLE */}
 
-                      <span className="hero-thumb-title relative z-10 line-clamp-2 text-left">
-                        {
-                          thumbMovie.thumbLabel
-                        }
-                      </span>
-                    </button>
-                  </SwiperSlide>
-                )
-              )}
-            </Swiper>
+                      <div className="hero-title-wrap">
+                        <p className="hero-index">
+                          <span className="hero-index-num">
+                            {movie.thumbIndex}
+                          </span>
+                        </p>
 
-            {/* ==================================
+                        <h1 className="hero-title">
+                          <span>
+                            {movie.titleMain}
+                          </span>
+
+                          {movie.titleSub && (
+                            <span>
+                              {movie.titleSub}
+                            </span>
+                          )}
+                        </h1>
+                      </div>
+
+                      {/* STARS */}
+
+                      <div
+                        className="hero-stars"
+                        aria-label={`Rated ${movie.rating} out of 10`}
+                      >
+                        {Array.from({
+                          length: 5,
+                        }).map((_, idx) => (
+                          <span
+                            key={`${movie.id}-star-${idx}`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* META */}
+
+                      <div className="hero-meta">
+                        <p>
+                          Genre:&nbsp;
+
+                          <span>
+                            {movie.genre.join(
+                              ", "
+                            )}
+                          </span>
+                        </p>
+
+                        <span className="hero-tag">
+                          {movie.year}
+                        </span>
+
+                        <span className="hero-tag">
+                          {movie.runtime}
+                        </span>
+
+                        <span className="hero-tag">
+                          IMDb {movie.rating}
+                        </span>
+
+                        <span className="hero-tag">
+                          {movie.age}
+                        </span>
+                      </div>
+
+                      {/* DESCRIPTION */}
+
+                      <p className="hero-description">
+                        {movie.description}
+                      </p>
+
+                      {/* ACTIONS */}
+
+                      <div className="hero-actions">
+                        <Button
+                          icon={PlayCircleIcon}
+                          iconPosition="right"
+                          variant="primary"
+                          size="md"
+                        >
+                          watch now
+                        </Button>
+
+                        <Button
+                          variant="secondary"
+                          size="md"
+                        >
+                          More info
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* ====================================
+              THUMBNAIL SLIDER
+          ==================================== */}
+
+        <aside className="hero-side absolute bottom-0 right-4 z-20 hidden xxl:w-[50%] lg:w-[50%] md:w-[40%] md:bottom-6 md:block">
+          <Swiper
+            modules={[
+              FreeMode,
+              Thumbs,
+            ]}
+            className="hero-thumbs-swiper"
+            loop={true}
+            freeMode={{
+              enabled: true,
+              momentum: true,
+            }}
+            watchSlidesProgress={true}
+            slideToClickedSlide={true}
+            observer={true}
+            observeParents={true}
+            grabCursor={true}
+            allowTouchMove={true}
+            onSwiper={(swiper) => {
+              setThumbsSwiper(swiper);
+
+              thumbsSwiperRef.current =
+                swiper;
+            }}
+            onClick={(swiper) => {
+              if (
+                typeof swiper.clickedIndex ===
+                "number"
+              ) {
+                const clickedIndex =
+                  swiper.clickedIndex;
+
+                setActiveIndex(
+                  clickedIndex
+                );
+
+                mainSwiperRef.current?.slideToLoop(
+                  clickedIndex
+                );
+              }
+            }}
+            spaceBetween={14}
+            slidesPerView={4}
+            breakpoints={{
+              420: {
+                slidesPerView: 2,
+              },
+
+              640: {
+                slidesPerView: 2,
+              },
+
+              900: {
+                slidesPerView: 2,
+              },
+
+              1200: {
+                slidesPerView: 3,
+              },
+              1400: {
+                slidesPerView: 4,
+              },
+            }}
+          >
+            {bannerMovies.map(
+              (thumbMovie, idx) => (
+                <SwiperSlide
+                  className="!h-auto"
+                  key={`thumb-${thumbMovie.id}`}
+                >
+                  <button
+                    type="button"
+                    className={`hero-thumb group relative rounded-lg ${activeIndex === idx
+                      ? "active"
+                      : ""
+                      }`}
+                    onClick={() =>
+                      mainSwiperRef.current?.slideToLoop(
+                        idx
+                      )
+                    }
+                    aria-label={`Show ${thumbMovie.thumbLabel}`}
+                  >
+                    {/* INDEX */}
+
+                    <p className="hero-thumb-index absolute top-0 z-5 text-[2.5rem]">
+                      {thumbMovie.thumbIndex}
+                    </p>
+
+                    {/* THUMB IMAGE */}
+
+                    <span
+                      className="hero-thumb-bg absolute inset-0"
+                      style={{
+                        backgroundImage: `url(${thumbMovie.thumb})`,
+                      }}
+                      aria-hidden="true"
+                    />
+
+                    {/* OVERLAY */}
+
+                    <span
+                      className="hero-thumb-overlay absolute inset-0"
+                      aria-hidden="true"
+                    />
+
+                    {/* TITLE */}
+
+                    <span className="hero-thumb-title relative z-10 line-clamp-2 text-left">
+                      {
+                        thumbMovie.thumbLabel
+                      }
+                    </span>
+                  </button>
+                </SwiperSlide>
+              )
+            )}
+          </Swiper>
+
+          {/* ==================================
                 CAROUSEL CONTROLS
             ================================== */}
 
-            <div
-              className="mt-4 flex items-center justify-end gap-2"
-              aria-label="Carousel controls"
+          <div
+            className="mt-4 flex items-center justify-end gap-2"
+            aria-label="Carousel controls"
+          >
+            <Button
+              variant="icon"
+              aria-label="Previous movie"
+              onClick={() =>
+                mainSwiperRef.current?.slidePrev()
+              }
             >
-              <Button
-                variant="icon"
-                aria-label="Previous movie"
-                onClick={() =>
-                  mainSwiperRef.current?.slidePrev()
-                }
-              >
-                <ChevronLeft size={18} />
-              </Button>
+              <ChevronLeft size={18} />
+            </Button>
 
-              <Button
-                variant="icon"
-                aria-label="Next movie"
-                onClick={() =>
-                  mainSwiperRef.current?.slideNext()
-                }
-              >
-                <ChevronRight size={18} />
-              </Button>
-            </div>
-          </aside>
+            <Button
+              variant="icon"
+              aria-label="Next movie"
+              onClick={() =>
+                mainSwiperRef.current?.slideNext()
+              }
+            >
+              <ChevronRight size={18} />
+            </Button>
+          </div>
+        </aside>
       </>
     </section>
   );

@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
-  env: {
-    TMDB_ACCESS_TOKEN: process.env.TMDB_ACCESS_TOKEN,
-    TMDB_API_KEY: process.env.TMDB_API_KEY,
-  },
   images: {
     remotePatterns: [
       {
@@ -23,3 +19,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+

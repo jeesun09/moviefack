@@ -1,80 +1,36 @@
 import { NextResponse } from "next/server";
-
 import { bannerMovies as fallbackMovies } from "@/components/movieData";
+import { normalizeTmdbMovie, TMDB_ACCESS_TOKEN, TMDB_API_KEY, TMDB_BASE_URL } from "@/app/constants/config";
 
-const TMDB_ACCESS_TOKEN =
-  process.env.TMDB_ACCESS_TOKEN ||
-  process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN;
-const TMDB_API_KEY =
-  process.env.TMDB_API_KEY ||
-  process.env.NEXT_PUBLIC_TMDB_API_KEY;
-const TMDB_BASE_URL = "https://api.themoviedb.org/3";
-
-const normalizeTmdbMovie = (movie) => {
-  if (!movie || typeof movie !== "object") {
-    return movie;
-  }
-
-  const title =
-    movie.title ||
-    movie.original_title ||
-    "Untitled";
-
-  return {
-    ...movie,
-    title,
-    original_title: movie.original_title || title,
-    overview:
-      movie.overview ||
-      "Discover an unforgettable cinematic experience.",
-    vote_average:
-      typeof movie.vote_average === "number"
-        ? movie.vote_average
-        : 0,
-    release_date: movie.release_date || "",
-    backdrop_path: movie.backdrop_path || "",
-    poster_path: movie.poster_path || "",
-  };
-};
+const apiKey = TMDB_API_KEY ? TMDB_API_KEY.trim().replace(/^['"]|['"]$/g, "") : "";
+const token = TMDB_ACCESS_TOKEN ? TMDB_ACCESS_TOKEN.trim().replace(/^['"]|['"]$/g, "") : "";
 
 export async function GET() {
-  if (!TMDB_ACCESS_TOKEN && !TMDB_API_KEY) {
-    return NextResponse.json(
-      fallbackMovies.map(normalizeTmdbMovie),
-      { status: 200 }
-    );
-  }
-
   try {
     const url = new URL(`${TMDB_BASE_URL}/trending/movie/week`);
-
-    if (TMDB_API_KEY) {
-      url.searchParams.set("api_key", TMDB_API_KEY);
+    if (apiKey) {
+      url.searchParams.set("api_key", apiKey);
     }
 
     const headers = {
       "Content-Type": "application/json",
     };
 
-    if (TMDB_ACCESS_TOKEN && !TMDB_API_KEY) {
-      headers.Authorization = `Bearer ${TMDB_ACCESS_TOKEN}`;
+    if (token && !apiKey) {
+      headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       headers,
       next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
-      throw new Error(
-        `TMDB request failed with ${response.status}`
-      );
+      throw new Error(`TMDB request failed with ${response.status}`);
     }
 
     const data = await response.json();
-    const results = Array.isArray(data?.results)
-      ? data.results
-      : [];
+    const results = Array.isArray(data?.results) ? data.results : [];
 
     return NextResponse.json(
       results.length
@@ -91,3 +47,5 @@ export async function GET() {
     );
   }
 }
+
+
