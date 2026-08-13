@@ -18,31 +18,33 @@ const SectionSlider = ({ title, subtitle, movies }) => {
 
 
   return (
-    <section className="space-y-7">
+    <section className="lg:mb-10 mb-6">
       <div className="flex flex-col mb-8 gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold text-white">{title}</h2>
           <p className="max-w-2xl text-sm text-white/60">{subtitle}</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <span className="text-xs uppercase tracking-[0.28em] text-white/40">
             drag to explore
           </span>
-          <button
-            ref={setPrevEl}
-            className="section-nav-button hover:bg-primary hover:text-white"
-            aria-label="Previous section"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            ref={setNextEl}
-            className="section-nav-button hover:bg-primary hover:text-white"
-            aria-label="Next section"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
+          <div className="flex items-center gap-2" >
+            <button
+              ref={setPrevEl}
+              className="section-nav-button hover:bg-primary hover:text-white"
+              aria-label="Previous section"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              ref={setNextEl}
+              className="section-nav-button hover:bg-primary hover:text-white"
+              aria-label="Next section"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
 
