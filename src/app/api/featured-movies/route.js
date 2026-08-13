@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import { bannerMovies as fallbackMovies } from "@/components/movieData";
-import { normalizeTmdbMovie, TMDB_ACCESS_TOKEN, TMDB_API_KEY, TMDB_BASE_URL } from "@/app/constants/config";
+import {
+  normalizeTmdbMovie,
+  TMDB_ACCESS_TOKEN,
+  TMDB_API_KEY,
+  TMDB_BASE_URL,
+} from "@/constants/config";
 
-const apiKey = TMDB_API_KEY ? TMDB_API_KEY.trim().replace(/^['"]|['"]$/g, "") : "";
-const token = TMDB_ACCESS_TOKEN ? TMDB_ACCESS_TOKEN.trim().replace(/^['"]|['"]$/g, "") : "";
+const apiKey = TMDB_API_KEY
+  ? TMDB_API_KEY.trim().replace(/^['"]|['"]$/g, "")
+  : "";
+const token = TMDB_ACCESS_TOKEN
+  ? TMDB_ACCESS_TOKEN.trim().replace(/^['"]|['"]$/g, "")
+  : "";
 
 export async function GET() {
   try {
@@ -36,16 +45,13 @@ export async function GET() {
       results.length
         ? results.map(normalizeTmdbMovie)
         : fallbackMovies.map(normalizeTmdbMovie),
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("TMDB proxy request failed:", error);
 
-    return NextResponse.json(
-      fallbackMovies.map(normalizeTmdbMovie),
-      { status: 200 }
-    );
+    return NextResponse.json(fallbackMovies.map(normalizeTmdbMovie), {
+      status: 200,
+    });
   }
 }
-
-

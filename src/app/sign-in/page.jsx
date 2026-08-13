@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { M } from "@/app/constants/images";
+import { M } from "@/constants/images";
 import { LogIn, Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 
 export default function SignInPage() {
@@ -53,7 +53,8 @@ export default function SignInPage() {
             Welcome Back
           </h1>
           <p className="text-xs sm:text-sm text-white/60">
-            Sign in to access your saved movies, watchlist, and personalized recommendations.
+            Sign in to access your saved movies, watchlist, and personalized
+            recommendations.
           </p>
         </div>
 

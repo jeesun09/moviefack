@@ -1,5 +1,5 @@
 import MovieDetailClientComponent from "@/components/pageComponents/movieDetail/MovieDetailClientComponent";
-import { getMovieDetails, getMovieVideos, getMovieCredits, getSimilarMovies } from "@/util/api";
+import { getMovieDetails, getMovieVideos, getMovieCredits, getSimilarMovies } from "@/util/api.js";
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

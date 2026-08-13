@@ -5,8 +5,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { M } from "@/app/constants/images";
-import { UserPlus, User, Mail, Lock, ArrowRight, ShieldCheck } from "lucide-react";
+import { M } from "@/constants/images";
+import {
+  UserPlus,
+  User,
+  Mail,
+  Lock,
+  ArrowRight,
+  ShieldCheck,
+} from "lucide-react";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -54,7 +61,8 @@ export default function SignUpPage() {
             Create Your Account
           </h1>
           <p className="text-xs sm:text-sm text-white/60">
-            Sign up to save movies to your personal Wishlist and sync across devices.
+            Sign up to save movies to your personal Wishlist and sync across
+            devices.
           </p>
         </div>
 
@@ -120,8 +128,19 @@ export default function SignUpPage() {
               onChange={(e) => setAgree(e.target.checked)}
               className="mt-0.5 rounded border-white/20 bg-white/5 text-primary focus:ring-0 cursor-pointer"
             />
-            <label htmlFor="agree" className="text-xs text-white/70 cursor-pointer leading-relaxed">
-              I agree to the <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a>.
+            <label
+              htmlFor="agree"
+              className="text-xs text-white/70 cursor-pointer leading-relaxed"
+            >
+              I agree to the{" "}
+              <a href="#" className="text-primary hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-primary hover:underline">
+                Privacy Policy
+              </a>
+              .
             </label>
           </div>
 

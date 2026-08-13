@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { M } from "@/app/constants/images";
+import { M } from "@/constants/images";
 
 const Footer = () => {
   return (
@@ -14,7 +14,6 @@ const Footer = () => {
       />
 
       <div className="relative z-10 mx-auto max-w-[1600px] w-full px-5 text-center flex flex-col items-center gap-4">
-
         {/* Logo Branding */}
         <Link href="/" className="inline-flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-2 shadow-[0_0_25px_rgba(255,59,48,0.3)] transition duration-300 group-hover:scale-105">
@@ -34,7 +33,8 @@ const Footer = () => {
 
         {/* Powerful Concise Content */}
         <p className="max-w-md text-xs sm:text-sm text-white/60 leading-relaxed">
-          Stream unlimited trending movies, blockbuster cinema, and exclusive TV series in Ultra HD.
+          Stream unlimited trending movies, blockbuster cinema, and exclusive TV
+          series in Ultra HD.
         </p>
 
         {/* Copyright Bar */}

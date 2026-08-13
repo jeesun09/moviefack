@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { M } from "@/app/constants/images";
+import { M } from "@/constants/images";
 
 export default function Loading() {
   return (
@@ -13,7 +13,10 @@ export default function Loading() {
       <div className="relative z-10 flex flex-col items-center justify-center text-center gap-5">
         {/* Animated Logo Container */}
         <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/40 bg-surface/90 p-4 shadow-[0_0_35px_rgba(255,59,48,0.35)] transition duration-500 hover:scale-105">
-          <div className="absolute inset-0 rounded-3xl bg-primary/10 blur-md animate-pulse" aria-hidden="true" />
+          <div
+            className="absolute inset-0 rounded-3xl bg-primary/10 blur-md animate-pulse"
+            aria-hidden="true"
+          />
           <Image
             src={M}
             alt="MUVI logo"

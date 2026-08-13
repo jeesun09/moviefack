@@ -15,34 +15,49 @@ import {
   CheckCircle2,
   User,
 } from "lucide-react";
+import VideoModal from "@/components/common/VideoModal";
 
-const MovieDetailClientComponent = ({ movie, trailerKey, cast, similarMovies }) => {
+const MovieDetailClientComponent = ({
+  movie,
+  trailerKey,
+  cast,
+  similarMovies,
+}) => {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [isMovieOpen, setIsMovieOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
   const { addToWishlist, isMovieInWishlist } = useAuth();
   const isSaved = isMovieInWishlist(movie.id);
+  console.log("movie", movie);
 
   const backdropSrc =
-    getImageUrl(movie.backdrop_path || movie.backdrop || movie.poster_path, "original") ||
-    "https://image.tmdb.org/t/p/original/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg";
+    getImageUrl(
+      movie.backdrop_path || movie.backdrop || movie.poster_path,
+      "original",
+    ) || "https://image.tmdb.org/t/p/original/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg";
 
   const posterSrc =
-    getImageUrl(movie.poster_path || movie.thumb || movie.backdrop_path, "w500") ||
-    "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg";
+    getImageUrl(
+      movie.poster_path || movie.thumb || movie.backdrop_path,
+      "w500",
+    ) || "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg";
 
-  const titleMain = movie.titleMain || movie.title || movie.original_title || "Untitled";
+  const titleMain =
+    movie.titleMain || movie.title || movie.original_title || "Untitled";
   const titleSub = movie.titleSub || "";
   const releaseYear = movie.release_date
     ? String(movie.release_date).split("-")[0]
     : movie.year || "2026";
 
-  const ratingDisplay = typeof movie.vote_average === "number"
-    ? movie.vote_average.toFixed(1)
-    : movie.rating || "8.5";
+  const ratingDisplay =
+    typeof movie.vote_average === "number"
+      ? movie.vote_average.toFixed(1)
+      : movie.rating || "8.5";
 
-  const genreList = Array.isArray(movie.genre) && movie.genre.length
-    ? movie.genre
-    : ["Action", "Adventure", "Sci-Fi"];
+  const genreList =
+    Array.isArray(movie.genre) && movie.genre.length
+      ? movie.genre
+      : ["Action", "Adventure", "Sci-Fi"];
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -114,14 +129,16 @@ const MovieDetailClientComponent = ({ movie, trailerKey, cast, similarMovies }) 
 
             {/* Synopsis / Description */}
             <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-white/75 line-clamp-4">
-              {movie.overview || movie.description || "Stream this blockbuster movie in Ultra HD on MUVI Cinema."}
+              {movie.overview ||
+                movie.description ||
+                "Stream this blockbuster movie in Ultra HD on MUVI Cinema."}
             </p>
 
             {/* ACTION BUTTONS */}
             <div className="flex flex-wrap items-center gap-3 pt-4">
               {/* Play Button */}
               <button
-                onClick={() => setIsTrailerOpen(true)}
+                onClick={() => setIsMovieOpen(true)}
                 className="group flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-[0_0_30px_rgba(255,59,48,0.45)] transition hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(255,59,48,0.6)]"
               >
                 <PlayCircle className="h-5 w-5" />
@@ -140,12 +157,15 @@ const MovieDetailClientComponent = ({ movie, trailerKey, cast, similarMovies }) 
               {/* Wishlist Button */}
               <button
                 onClick={() => addToWishlist(movie)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${isSaved
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
+                  isSaved
                     ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
                     : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                  }`}
+                }`}
               >
-                <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
+                <Bookmark
+                  className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
+                />
                 <span>{isSaved ? "Saved" : "My List"}</span>
               </button>
 
@@ -236,6 +256,13 @@ const MovieDetailClientComponent = ({ movie, trailerKey, cast, similarMovies }) 
         isOpen={isTrailerOpen}
         onClose={() => setIsTrailerOpen(false)}
         trailerKey={trailerKey}
+        title={titleMain}
+      />
+
+      <VideoModal
+        isOpen={isMovieOpen}
+        onClose={() => setIsMovieOpen(false)}
+        id={movie.id}
         title={titleMain}
       />
 

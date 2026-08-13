@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { M } from "@/app/constants/images";
+import { M } from "@/constants/images";
 
 export default function PageInitialLoader() {
   const [loading, setLoading] = useState(true);
