@@ -578,6 +578,7 @@ const Banner = () => {
             aria-label="Carousel controls"
           >
             <Button
+              className="w-10 h-10! p-0! flex items-center justify-center rounded-full"
               variant="icon"
               aria-label="Previous movie"
               onClick={() =>
@@ -588,6 +589,7 @@ const Banner = () => {
             </Button>
 
             <Button
+              className="w-10 h-10! p-0! flex items-center justify-center rounded-full"
               variant="icon"
               aria-label="Next movie"
               onClick={() =>

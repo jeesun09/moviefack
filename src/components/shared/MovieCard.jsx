@@ -22,8 +22,8 @@ const MovieCard = ({ movie = {} }) => {
   const ratingDisplay = typeof movie.vote_average === "number"
     ? `${movie.vote_average.toFixed(1)}/10`
     : movie.rating
-    ? `${movie.rating}/10`
-    : "N/A";
+      ? `${movie.rating}/10`
+      : "N/A";
 
   const genreDisplay = Array.isArray(movie.genre) && movie.genre.length
     ? movie.genre[0]
@@ -40,7 +40,7 @@ const MovieCard = ({ movie = {} }) => {
 
   return (
     <Link href={targetHref} className="block">
-      <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)] cursor-pointer">
+      <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)] cursor-pointer">
         <div className="relative xxl:min-h-110.25 xl:h-105 lg:h-100 md:h-90 h-70 overflow-hidden rounded-[28px] bg-white/5">
           <Image
             height={500}
@@ -54,11 +54,10 @@ const MovieCard = ({ movie = {} }) => {
           <button
             onClick={handleBookmarkClick}
             aria-label="Add to wishlist"
-            className={`absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full border transition duration-300 ${
-              isSaved
+            className={`absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full border transition duration-300 ${isSaved
                 ? "border-primary bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.5)]"
                 : "border-white/20 bg-black/50 text-white/80 backdrop-blur-md hover:border-primary hover:bg-primary hover:text-white"
-            }`}
+              }`}
           >
             <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
           </button>
