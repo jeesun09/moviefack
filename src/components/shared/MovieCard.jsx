@@ -35,8 +35,11 @@ const MovieCard = ({ movie = {} }) => {
     addToWishlist(movie);
   };
 
+  const isSeriesContent = movie.isSeries || movie.media_type === "tv" || movie.type === "series" || !!movie.first_air_date;
+  const targetHref = isSeriesContent ? `/series/${movieId}` : `/movie/${movieId}`;
+
   return (
-    <Link href={`/movie/${movieId}`} className="block">
+    <Link href={targetHref} className="block">
       <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)] cursor-pointer">
         <div className="relative xxl:min-h-110.25 xl:h-105 lg:h-100 md:h-90 h-70 overflow-hidden rounded-[28px] bg-white/5">
           <Image

@@ -24,8 +24,7 @@ import {
 const menus = [
   { name: "Home", href: "/", icon: Home },
   { name: "Movies", href: "/movies", icon: Film },
-  { name: "TV Shows", href: "/tv-shows", icon: Tv },
-  { name: "Series", href: "/series", icon: Radio },
+  { name: "Series", href: "/series", icon: Tv },
   { name: "My List", href: "/my-list", icon: Bookmark },
 ];
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, X, Film, PlayCircle, Loader2, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { getImageUrl } from "@/util/helper";
 import { searchMovies } from "@/util/api";
 
@@ -156,8 +157,9 @@ const SearchModal = ({ isOpen, onClose }) => {
                       : movie.year || "2026";
 
                     return (
-                      <div
+                      <Link
                         key={movie.id}
+                        href={movie.isSeries || movie.media_type === "tv" ? `/series/${movie.id}` : `/movie/${movie.id}`}
                         onClick={onClose}
                         className="group flex items-center gap-4 rounded-2xl border border-white/5 bg-white/[0.03] p-3 transition duration-200 hover:border-primary/40 hover:bg-white/[0.08] cursor-pointer"
                       >
@@ -190,7 +192,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                         <div className="shrink-0 text-white/40 group-hover:text-primary transition">
                           <PlayCircle className="h-6 w-6" />
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>

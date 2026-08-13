@@ -20,6 +20,7 @@ export const normalizeTmdbMovie = (movie) => {
   const titleMain = movie.titleMain || movie.title || movie.original_title || movie.name || movie.original_name || "Untitled";
   const titleSub = movie.titleSub || "";
   const fullTitle = titleSub ? `${titleMain} ${titleSub}`.trim() : titleMain;
+  const isSeries = movie.media_type === "tv" || !!movie.first_air_date || !!movie.name || !!movie.isSeries || movie.type === "series";
 
   return {
     ...movie,
@@ -28,6 +29,8 @@ export const normalizeTmdbMovie = (movie) => {
     original_title: movie.original_title || fullTitle,
     titleMain,
     titleSub,
+    isSeries,
+    media_type: movie.media_type || (isSeries ? "tv" : "movie"),
     overview:
       movie.overview ||
       movie.description ||
@@ -38,10 +41,11 @@ export const normalizeTmdbMovie = (movie) => {
         : Number(movie.rating || 0),
     release_date:
       movie.release_date ||
+      movie.first_air_date ||
       (movie.year ? `${movie.year}-01-01` : "2026-01-01"),
     backdrop_path: movie.backdrop_path || movie.backdrop || "",
     poster_path: movie.poster_path || movie.thumb || "",
-    genre: Array.isArray(movie.genre) ? movie.genre : ["Movie"],
+    genre: Array.isArray(movie.genre) && movie.genre.length ? movie.genre : [isSeries ? "Series" : "Movie"],
   };
 };
 
