@@ -24,6 +24,7 @@ import {
   LayoutGrid,
   X,
   Play,
+  GripHorizontal,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -413,37 +414,46 @@ const SeriesDetailClientComponent = ({
             <div className="w-11" />
           </div>
 
-          {/* Floating Toggle Button to Open/Close Episodes Drawer (Matching Screenshot 1 & 2) */}
-          <button
+          {/* Floating Toggle Button to Open/Close Episodes Drawer (Draggable Anywhere) */}
+          <motion.button
+            drag
+            dragMomentum={false}
+            whileDrag={{ scale: 1.15, cursor: "grabbing" }}
+            whileHover={{ scale: 1.08 }}
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               setIsDrawerOpen((prev) => !prev);
             }}
-            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:scale-110 hover:bg-white/20 hover:border-white/45 cursor-pointer active:scale-95 ${
+            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:bg-white/20 hover:border-white/45 cursor-grab active:cursor-grabbing ${
               isDrawerOpen ? "ring-2 ring-primary/60" : ""
             }`}
-            title={isDrawerOpen ? "Hide Episodes Drawer" : "Show Episodes Drawer"}
+            title={isDrawerOpen ? "Hide Episodes Drawer (Draggable)" : "Show Episodes Drawer (Draggable)"}
             aria-label="Toggle episodes list"
           >
-            <LayoutGrid className="h-5 w-5 text-white" />
-          </button>
+            <LayoutGrid className="h-5 w-5 text-white pointer-events-none" />
+          </motion.button>
 
-          {/* Right Side Episodes Drawer Panel (Matching Reference Design) */}
+          {/* Right Side Episodes Drawer Panel (Draggable Anywhere) */}
           <AnimatePresence>
             {isDrawerOpen && (
               <motion.div
+                drag
+                dragMomentum={false}
                 initial={{ opacity: 0, x: 80 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 80 }}
                 transition={{ duration: 0.22, ease: "easeOut" }}
                 className="absolute right-3 sm:right-5 top-3 sm:top-5 bottom-3 sm:bottom-5 z-40 w-[310px] sm:w-[360px] md:w-[380px] rounded-3xl border border-white/15 bg-[#0f0f0f]/95 shadow-[0_25px_80px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col p-4 overflow-hidden"
               >
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                  <span className="text-[11px] font-bold text-white/80">
-                    Episodes
-                  </span>
+                {/* Drawer Header with Drag Handle */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-3 cursor-grab active:cursor-grabbing select-none">
+                  <div className="flex items-center gap-2">
+                    <GripHorizontal className="h-4 w-4 text-white/40" />
+                    <span className="text-[11px] font-bold text-white/80">
+                      Episodes
+                    </span>
+                  </div>
                   {/* HIDE Button (Closes Drawer) */}
                   <button
                     type="button"
