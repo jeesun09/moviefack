@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { getImageUrl } from "@/util/helper";
 import { useAuth } from "@/context/AuthContext";
@@ -16,40 +16,9 @@ import {
   User,
   X,
   Film,
-  ArrowLeft,
-  ChevronDown,
-  Check,
 } from "lucide-react";
 import VideoModal from "@/components/common/VideoModal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
-const SERVERS = [
-  {
-    id: "vidking",
-    name: "Server 1 (VidKing)",
-    tag: "Ultra Fast",
-    getUrl: (movieId) =>
-      `https://www.vidking.net/embed/movie/${movieId}?color=e50914&autoPlay=true`,
-  },
-  {
-    id: "autoembed",
-    name: "Server 2 (AutoEmbed)",
-    tag: "HD 1080p",
-    getUrl: (movieId) => `https://player.autoembed.cc/embed/movie/${movieId}`,
-  },
-  {
-    id: "superembed",
-    name: "Server 3 (SuperEmbed)",
-    tag: "Multi-Server",
-    getUrl: (movieId) => `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
-  },
-  {
-    id: "vidsrc",
-    name: "Server 4 (VidSrc)",
-    tag: "Backup",
-    getUrl: (movieId) => `https://vidsrc.xyz/embed/movie/${movieId}`,
-  },
-];
 
 const MovieDetailClientComponent = ({
   movie,
@@ -99,71 +68,6 @@ const MovieDetailClientComponent = ({
       ? movie.genre
       : ["Action", "Adventure", "Sci-Fi"];
 
-  // Full-Screen In-Banner Video Player States
-  const [selectedServer, setSelectedServer] = useState(SERVERS[0]);
-  const [isServerOpen, setIsServerOpen] = useState(false);
-  const [isLoadingIframe, setIsLoadingIframe] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(15);
-  const [iframeKey, setIframeKey] = useState(Date.now());
-  const [controlsVisible, setControlsVisible] = useState(true);
-
-  // Lock body scroll and handle buffering progress when isPlay is active
-  useEffect(() => {
-    if (isPlay) {
-      document.body.style.overflow = "hidden";
-      setIsLoadingIframe(true);
-      setLoadingProgress(15);
-
-      const progressInterval = setInterval(() => {
-        setLoadingProgress((prev) => {
-          if (prev >= 92) {
-            clearInterval(progressInterval);
-            return 92;
-          }
-          return prev + Math.floor(Math.random() * 12) + 8;
-        });
-      }, 120);
-
-      const readyTimer = setTimeout(() => {
-        setIsLoadingIframe(false);
-      }, 1800);
-
-      return () => {
-        document.body.style.overflow = "";
-        clearInterval(progressInterval);
-        clearTimeout(readyTimer);
-      };
-    } else {
-      document.body.style.overflow = "";
-    }
-  }, [isPlay, selectedServer, iframeKey]);
-
-  // Auto-hide controls after inactivity
-  useEffect(() => {
-    if (!isPlay) return;
-
-    let timeout;
-    const resetTimer = () => {
-      setControlsVisible(true);
-      clearTimeout(timeout);
-      if (!isServerOpen) {
-        timeout = setTimeout(() => {
-          setControlsVisible(false);
-        }, 3500);
-      }
-    };
-
-    window.addEventListener("mousemove", resetTimer);
-    window.addEventListener("touchstart", resetTimer);
-    resetTimer();
-
-    return () => {
-      window.removeEventListener("mousemove", resetTimer);
-      window.removeEventListener("touchstart", resetTimer);
-      clearTimeout(timeout);
-    };
-  }, [isPlay, isServerOpen]);
-
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard?.writeText(window.location.href);
@@ -179,167 +83,75 @@ const MovieDetailClientComponent = ({
     router.push(pathname + "?" + params.toString());
   };
 
-  const handleCloseVideoPlayer = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("play");
-    const q = params.toString();
-    router.push(pathname + (q ? "?" + q : ""));
-  };
-
   return (
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
-      {/* ── 100% FULL-SCREEN CINEMA PLAYER (MATCHING REFERENCE DESIGN) ── */}
-      {isPlay && (
-        <div
-          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${
-            !controlsVisible ? "cursor-none" : ""
-          }`}
-        >
-          {/* Top Bar Floating Controls */}
-          <div
-            className={`absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-6 transition-opacity duration-300 ${
-              controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            {/* Top-Left: Back Arrow Button */}
-            <button
-              onClick={handleCloseVideoPlayer}
-              className="flex h-10 w-11 items-center justify-center rounded-lg border border-white/20 bg-black/75 text-white/90 backdrop-blur-md transition hover:bg-white/10 hover:border-white/40 hover:text-white cursor-pointer shadow-lg"
-              title="Back (Esc)"
-              aria-label="Back to movie details"
+      {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
+      {isPlay ? (
+        <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+          {/* Full-Bleed Backdrop Image with Cinema Blur */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={backdropSrc}
+              alt={titleMain}
+              fill
+              priority
+              className="object-cover object-center blur-2xl scale-110 opacity-30"
+            />
+            {/* Deep Dark Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/95" />
+            <div className="absolute inset-0 bg-radial from-transparent via-black/60 to-black/90" />
+          </div>
+
+          <div className="relative z-10 mx-auto w-full max-w-[1600px]">
+            <div
+              className="relative z-10 w-full overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
             >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-
-            {/* Top-Center: CHANGE SERVER Button & Dropdown */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:top-6">
-              <div className="relative">
+              {/* Top Bar */}
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <Film className="h-5 w-5 text-primary" />
+                  {titleMain && (
+                    <h3 className="text-base font-bold text-white truncate max-w-md">
+                      {titleMain}
+                    </h3>
+                  )}
+                </div>
                 <button
-                  onClick={() => setIsServerOpen((prev) => !prev)}
-                  className="flex items-center gap-2 rounded-lg border border-white/20 bg-black/80 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:bg-white/10 hover:border-white/40 cursor-pointer shadow-lg"
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete("play");
+                    const q = params.toString();
+                    router.push(pathname + (q ? "?" + q : ""));
+                  }}
+                  className="rounded-full border border-white/10 bg-white/5 p-2 text-white/70 hover:bg-white/10 hover:text-white transition cursor-pointer"
+                  aria-label="Close player"
                 >
-                  <span>CHANGE SERVER</span>
-                  <ChevronDown
-                    className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${
-                      isServerOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <X className="h-5 w-5" />
                 </button>
+              </div>
 
-                {/* Server Dropdown Menu */}
-                {isServerOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-56 overflow-hidden rounded-2xl border border-white/20 bg-[#121212]/95 p-1.5 shadow-[0_15px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl z-50 text-white">
-                    <div className="px-3 py-1.5 border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/50">
-                      Select Server
-                    </div>
-                    <div className="space-y-1 mt-1">
-                      {SERVERS.map((server) => {
-                        const isSelected = server.id === selectedServer.id;
-                        return (
-                          <button
-                            key={server.id}
-                            onClick={() => {
-                              setSelectedServer(server);
-                              setIsServerOpen(false);
-                              setIframeKey(Date.now());
-                            }}
-                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition cursor-pointer ${
-                              isSelected
-                                ? "bg-primary text-white shadow-[0_0_12px_rgba(255,59,48,0.5)]"
-                                : "text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
-                          >
-                            <div className="text-left">
-                              <p className="leading-tight">{server.name}</p>
-                              <span className="text-[10px] opacity-60">
-                                {server.tag}
-                              </span>
-                            </div>
-                            {isSelected && (
-                              <Check className="h-3.5 w-3.5 shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
+              {/* Video Player iFrame Container */}
+              <div className="relative w-full aspect-video bg-black">
+                {movieId ? (
+                  <iframe
+                    src={`https://www.vidking.net/embed/movie/${movieId}?color=e50914&autoPlay=true`}
+                    width="100%"
+                    height="100%"
+                    className="absolute inset-0 h-full w-full border-0"
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-white/50">
+                    Video currently unavailable.
                   </div>
                 )}
               </div>
             </div>
-
-            {/* Spacer for symmetrical balance */}
-            <div className="w-11" />
           </div>
-
-          {/* Buffering / Preparing Stream Card (Matching Image 2) */}
-          {isLoadingIframe && (
-            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black p-4 text-white">
-              <div className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-[#121212]/95 p-6 sm:p-7 shadow-[0_20px_70px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col items-center text-center gap-3">
-                {/* Brand Category Tag */}
-                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
-                  MOVIEFACK • STREAM
-                </span>
-
-                {/* Main Heading */}
-                <h3 className="text-base sm:text-lg font-black uppercase tracking-wider text-white">
-                  PREPARING YOUR STREAM
-                </h3>
-
-                {/* Subtitle */}
-                <p className="text-xs text-white/60 -mt-1 font-medium">
-                  Buffering the first frame
-                </p>
-
-                {/* Animated Red Progress Bar */}
-                <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-3">
-                  <div
-                    className="h-full bg-primary rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(255,59,48,0.8)]"
-                    style={{ width: `${loadingProgress}%` }}
-                  />
-                </div>
-
-                {/* Status and Percentage Footer */}
-                <div className="w-full flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-white/40 pt-1">
-                  <span>WAITING FOR PLAYBACK</span>
-                  <span className="text-white/70 font-mono">
-                    {loadingProgress}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Full-Screen Video Player iFrame */}
-          <div className="relative z-10 h-full w-full flex-1 bg-black flex items-center justify-center">
-            {movieId ? (
-              <iframe
-                key={iframeKey}
-                src={selectedServer.getUrl(movieId)}
-                title={titleMain}
-                className="h-full w-full border-0 absolute inset-0 bg-black"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowFullScreen
-                onLoad={() => {
-                  setTimeout(() => setIsLoadingIframe(false), 900);
-                }}
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-3 text-center p-6 text-white">
-                <p className="text-base font-bold">Video stream unavailable</p>
-                <button
-                  onClick={handleCloseVideoPlayer}
-                  className="rounded-full bg-primary px-5 py-2 text-xs font-bold uppercase tracking-wider text-white cursor-pointer"
-                >
-                  Back to Details
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ── STANDARD MOVIE DETAILS HERO BANNER ── */}
-      <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+        </section>
+      ) : (
+        <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
           {/* Full-Bleed Backdrop Image */}
           <div className="absolute inset-0 z-0">
             <Image
@@ -461,6 +273,7 @@ const MovieDetailClientComponent = ({
             </div>
           </div>
         </section>
+      )}
 
       {/* ── CAST SECTION SLIDER ── */}
       {cast && cast.length > 0 && (
