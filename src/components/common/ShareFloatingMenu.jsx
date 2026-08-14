@@ -120,10 +120,10 @@ export default function ShareFloatingMenu({ title = "Movie", url = "" }) {
 
     // Centered upward arc
     const positions = [
-      { x: -52, y: -40 },
-      { x: -18, y: -62 },
-      { x: 18, y: -62 },
-      { x: 52, y: -40 },
+      { x: -60, y: -30 },
+      { x: -26, y: -62 },
+      { x: 26, y: -62 },
+      { x: 60, y: -30 },
     ];
     return positions[index] || { x: 0, y: 0 };
   };
@@ -191,9 +191,8 @@ export default function ShareFloatingMenu({ title = "Movie", url = "" }) {
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${
-        isOpen ? "z-50" : "z-10"
-      }`}
+      className={`relative inline-flex items-center justify-center ${isOpen ? "z-50" : "z-10"
+        }`}
       ref={menuRef}
     >
       {/* Floating Circular / Radial Action Icons */}
@@ -246,11 +245,10 @@ export default function ShareFloatingMenu({ title = "Movie", url = "" }) {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`relative z-40 flex h-11 w-11 items-center justify-center rounded-full border text-white backdrop-blur-md transition duration-300 cursor-pointer ${
-          isOpen
-            ? "border-primary bg-primary text-white shadow-[0_0_25px_rgba(255,59,48,0.7)] scale-105"
-            : "border-white/20 bg-white/10 hover:border-white/40 hover:bg-white/20 hover:scale-105"
-        }`}
+        className={`relative z-40 flex h-11 w-11 items-center justify-center rounded-full border text-white backdrop-blur-md transition duration-300 cursor-pointer ${isOpen
+          ? "border-primary bg-primary text-white shadow-[0_0_25px_rgba(255,59,48,0.7)] scale-105"
+          : "border-white/20 bg-white/10 hover:border-white/40 hover:bg-white/20 hover:scale-105"
+          }`}
         title={isOpen ? "Close Share" : "Share"}
         aria-label="Share movie or series"
       >

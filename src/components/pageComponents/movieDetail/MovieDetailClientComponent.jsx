@@ -286,7 +286,7 @@ const MovieDetailClientComponent = ({
             src={backdropSrc}
             alt={titleMain}
             fill
-
+            sizes="100vw"
             className="object-cover object-center"
           />
           {/* Deep Dark Gradient Overlays */}
@@ -388,6 +388,7 @@ const MovieDetailClientComponent = ({
                 src={posterSrc}
                 alt={titleMain}
                 fill
+                sizes="288px"
                 className="object-cover"
               />
             </div>
@@ -419,6 +420,7 @@ const MovieDetailClientComponent = ({
                         src={actorPhoto}
                         alt={actor.name}
                         fill
+                        sizes="48px"
                         className="object-cover"
                       />
                     ) : (
