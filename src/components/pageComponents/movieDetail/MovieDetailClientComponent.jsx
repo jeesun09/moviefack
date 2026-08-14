@@ -108,7 +108,7 @@ const MovieDetailClientComponent = ({
             >
               {/* Top Bar */}
               <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 w-[90%]">
                   <Film className="h-5 w-5 text-primary" />
                   {titleMain && (
                     <h3 className="text-base font-bold text-white truncate max-w-md">
