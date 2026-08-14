@@ -863,20 +863,3 @@ section.movie-hero .swiper-wrapper {
     align-items: flex-start;
   }
 }
-
-/* Custom Cinema Cursor */
-@media (pointer: fine) {
-  body {
-    cursor: default;
-  }
-
-  a,
-  button,
-  [role="button"],
-  input[type="submit"],
-  input[type="button"],
-  select,
-  .cursor-pointer {
-    cursor: none !important;
-  }
-}
