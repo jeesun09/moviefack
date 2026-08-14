@@ -687,7 +687,7 @@ const SeriesDetailClientComponent = ({
             </p>
 
             {/* ACTION BUTTONS */}
-            <div className="flex flex-wrap items-center gap-3 pt-4">
+            <div className="relative z-20 flex flex-wrap items-center gap-3 pt-4">
               {/* Play Button */}
               <button
                 onClick={handlePlaySeries}
