@@ -440,14 +440,16 @@ const Banner = () => {
                           watch now
                         </Button>
 
-                        <button
-                          type="button"
+                        <Button
+                          icon={BookmarkIcon}
+                          iconPosition="right"
+                          variant="secondary"
+                          size="md"
                           onClick={() => addToWishlist(movie)}
-                          className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:border-primary hover:bg-primary hover:text-white"
                         >
-                          <BookmarkIcon className="h-4 w-4" />
-                          <span>Wishlist</span>
-                        </button>
+                          Wishlist
+                        </Button>
+
                       </div>
 
                     </div>

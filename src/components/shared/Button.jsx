@@ -4,7 +4,7 @@ const variantClassMap = {
   primary:
     "group relative overflow-hidden rounded-full border border-transparent bg-[linear-gradient(120deg,color-mix(in_srgb,var(--primary)_90%,#f4b33e_10%),var(--primary))]  shadow-[0_14px_28px_rgba(255,95,80,0.28)]",
   secondary:
-    "group relative overflow-hidden rounded-lg border border-white/20 bg-white/5 px-5 text-[0.72rem] font-bold transition-all duration-300 ease-out uppercase tracking-[0.05em] text-white backdrop-blur-sm",
+    "group relative overflow-hidden rounded-lg border border-white/20 bg-white/5 px-5 text-white backdrop-blur-sm",
   icon:
     "group relative overflow-hidden rounded-full border border-white/20 bg-black/30 text-white/90 backdrop-blur-sm",
 };
@@ -26,7 +26,7 @@ export default function Button({
   ...props
 }) {
   const classes = [
-    "inline-flex items-center justify-center gap-2 px-5 text-[16px] font-bold uppercase tracking-[0.05em] text-text-dark transform scale-100 transition-all duration-300 ease-out",
+    "inline-flex items-center justify-center gap-2 px-5 text-[14px] font-bold uppercase tracking-[0.05em] text-text-dark transform scale-100 transition-all duration-300 ease-out",
     variantClassMap[variant] || variantClassMap.primary,
     sizeClassMap[size] || sizeClassMap.md,
     className,
