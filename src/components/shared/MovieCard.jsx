@@ -46,7 +46,9 @@ const MovieCard = ({ movie = {} }) => {
             height={500}
             width={500}
             src={posterSrc}
-            alt={movie.title || "Movie poster"}
+            alt={movie.title || movie.titleMain || "Movie poster"}
+            loading="lazy"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
 

@@ -17,10 +17,53 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  themeColor: "#080808",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata = {
-  title: "Muvi | Watch Movies & TV Shows Online",
+  metadataBase: new URL("https://muvi-cinema.vercel.app"),
+  title: {
+    default: "Muvi Cinema | Watch Movies & TV Shows Online in 4K Ultra HD",
+    template: "%s | Muvi Cinema",
+  },
   description:
-    "Stream the latest movies and TV shows in HD with Muvi. Discover trending action, comedy, drama, horror, anime, and more—all in one premium entertainment destination.",
+    "Stream the latest movies, Hindi & Bengali web series, Hollywood blockbusters, anime, and TV shows in 4K Ultra HD on Muvi Cinema.",
+  keywords: [
+    "movies online",
+    "watch movies free",
+    "free tv series",
+    "bengali movies",
+    "hindi web series",
+    "bollywood blockbusters",
+    "hollywood movies in hd",
+    "k-drama",
+    "anime online",
+  ],
+  authors: [{ name: "Muvi Cinema Team" }],
+  creator: "Muvi Cinema",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://muvi-cinema.vercel.app",
+    siteName: "Muvi Cinema",
+    title: "Muvi Cinema | Watch Movies & TV Shows Online in 4K Ultra HD",
+    description:
+      "Stream the latest movies, Hindi & Bengali web series, and Hollywood blockbusters in 4K Ultra HD.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Muvi Cinema | Watch Movies & TV Shows Online",
+    description:
+      "Stream the latest movies, Hindi & Bengali web series, and Hollywood blockbusters in 4K Ultra HD.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
