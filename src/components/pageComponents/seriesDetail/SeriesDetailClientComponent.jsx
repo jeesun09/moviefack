@@ -207,6 +207,7 @@ const SeriesDetailClientComponent = ({
 
   return (
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
+<<<<<<< Updated upstream
       {season && episode ? (
         <></>
       ) : (
@@ -215,6 +216,121 @@ const SeriesDetailClientComponent = ({
           <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
             {/* Full-Bleed Backdrop Image */}
             <div className="absolute inset-0 z-0">
+=======
+      {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
+      <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+        {/* Full-Bleed Backdrop Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={backdropSrc}
+            alt={titleMain}
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          {/* Dark Gradients */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+        </div>
+
+        {/* Hero Content Grid */}
+        <div className="relative z-10 mx-auto w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          {/* Main Detail Content (Col 1-8) */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Metadata Badges */}
+            <div className="flex flex-wrap items-center gap-2.5 text-xs text-white/80">
+              <span className="flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-500/40 px-3 py-1 text-amber-400 font-bold">
+                <Star className="h-3.5 w-3.5 fill-amber-400" />
+                <span>IMDb {ratingDisplay}</span>
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
+                {releaseYear}
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
+                {series.number_of_seasons || 3}{" "}
+                {series.number_of_seasons === 1 ? "Season" : "Seasons"}
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium uppercase">
+                {series.adult ? "18+" : "TV-MA"}
+              </span>
+              <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-semibold text-primary">
+                Ultra HD 4K
+              </span>
+            </div>
+
+            {/* Title */}
+            <div className="space-y-1">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none uppercase">
+                {titleMain}
+              </h1>
+              {titleSub && (
+                <p className="text-xl sm:text-2xl font-bold text-primary">
+                  {titleSub}
+                </p>
+              )}
+            </div>
+
+            {/* Genres */}
+            <p className="text-sm font-semibold text-white/70">
+              Genre:&nbsp;
+              <span className="text-white">{genreList.join(" • ")}</span>
+            </p>
+
+            {/* Overview / Synopsis */}
+            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-white/75 line-clamp-4">
+              {series.overview ||
+                "Binge-watch this acclaimed original TV series in full 4K Ultra HD on MUVI Cinema."}
+            </p>
+
+            {/* ACTION BUTTONS */}
+            <div className="flex flex-wrap items-center gap-3 pt-4">
+              {/* Play Button */}
+              <button
+                onClick={handlePlaySeries}
+                className="group flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-[0_0_30px_rgba(255,59,48,0.45)] transition hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(255,59,48,0.6)]"
+              >
+                <PlayCircle className="h-5 w-5" />
+                <span>Play Season {selectedSeason}</span>
+              </button>
+
+              {/* Watch Trailer Button */}
+              <button
+                onClick={() => setIsTrailerOpen(true)}
+                className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
+              >
+                <Tv className="h-4 w-4" />
+                <span>Watch Trailer</span>
+              </button>
+
+              {/* Wishlist Button */}
+              <button
+                onClick={() => addToWishlist(series)}
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${isSaved
+                  ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                  : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                  }`}
+              >
+                <Bookmark
+                  className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
+                />
+                <span>{isSaved ? "Saved" : "In My List"}</span>
+              </button>
+
+              {/* Share Button */}
+              <button
+                onClick={handleShare}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
+                aria-label="Share series"
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Side Poster Card (Col 9-12) */}
+          <div className="hidden lg:block lg:col-span-4">
+            <div className="relative aspect-[2/3] w-72 ml-auto overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+>>>>>>> Stashed changes
               <Image
                 src={backdropSrc}
                 alt={titleMain}
@@ -366,17 +482,15 @@ const SeriesDetailClientComponent = ({
                 <button
                   type="button"
                   onClick={() => setIsSeasonOpen((prev) => !prev)}
-                  className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${
-                    isSeasonOpen
-                      ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,59,48,0.3)]"
-                      : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
-                  }`}
+                  className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${isSeasonOpen
+                    ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,59,48,0.3)]"
+                    : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
+                    }`}
                 >
                   <span>Season {selectedSeason}</span>
                   <ChevronDown
-                    className={`h-4 w-4 text-white/70 transition-transform duration-300 ${
-                      isSeasonOpen ? "rotate-180 text-primary" : ""
-                    }`}
+                    className={`h-4 w-4 text-white/70 transition-transform duration-300 ${isSeasonOpen ? "rotate-180 text-primary" : ""
+                      }`}
                   />
                 </button>
 
@@ -388,7 +502,7 @@ const SeriesDetailClientComponent = ({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.96 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute left-0 top-full z-50 mt-2 w-full min-w-48 overflow-hidden rounded-2xl border border-white/15 bg-[#141414]/95 p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl"
+                      className="absolute left-0 top-full z-50 mt-2 w-full min-w-48 max-h-50 overflow-auto rounded-2xl border border-white/15 bg-[#141414]/95 p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl"
                     >
                       <div className="space-y-1">
                         {seasonsList.map((num) => {
@@ -397,12 +511,23 @@ const SeriesDetailClientComponent = ({
                             <button
                               key={`season-item-${num}`}
                               type="button"
+<<<<<<< Updated upstream
                               onClick={() => handleSelectSeason(num)}
                               className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 ${
                                 isSelected
                                   ? "bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
                                   : "text-white/80 hover:bg-white/10 hover:text-white"
                               }`}
+=======
+                              onClick={() => {
+                                setSelectedSeason(num);
+                                setIsSeasonOpen(false);
+                              }}
+                              className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 ${isSelected
+                                ? "bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
+                                : "text-white/80 hover:bg-white/10 hover:text-white"
+                                }`}
+>>>>>>> Stashed changes
                             >
                               <span>Season {num}</span>
                               {isSelected && (
@@ -445,11 +570,10 @@ const SeriesDetailClientComponent = ({
               </span>
               <button
                 onClick={() => setIsSortDesc((prev) => !prev)}
-                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition ${
-                  isSortDesc
-                    ? "border-primary bg-primary/20 text-primary"
-                    : "border-white/15 bg-white/5 text-white/70 hover:border-white/30 hover:text-white"
-                }`}
+                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition ${isSortDesc
+                  ? "border-primary bg-primary/20 text-primary"
+                  : "border-white/15 bg-white/5 text-white/70 hover:border-white/30 hover:text-white"
+                  }`}
                 title={isSortDesc ? "Sort Ascending" : "Sort Descending"}
               >
                 <ArrowUpDown className="h-4 w-4" />

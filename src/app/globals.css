@@ -116,6 +116,26 @@ button {
   cursor: pointer;
 }
 
+/* custom scrollbar  */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e63946;
+}
+
+
+
 .swiper-wrapper {
   padding: 10px 0;
 }
