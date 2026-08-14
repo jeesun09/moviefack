@@ -14,6 +14,8 @@ import {
   Star,
   CheckCircle2,
   User,
+  X,
+  Film,
 } from "lucide-react";
 import VideoModal from "@/components/common/VideoModal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,12 +25,15 @@ const MovieDetailClientComponent = ({
   trailerKey,
   cast,
   similarMovies,
+  id,
+  title,
 }) => {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
   const [isMovieOpen, setIsMovieOpen] = useState(false);
   const [shareToast, setShareToast] = useState(false);
   const { addToWishlist, isMovieInWishlist } = useAuth();
-  const isSaved = isMovieInWishlist(movie.id);
+  const movieId = movie?.id || id;
+  const isSaved = isMovieInWishlist(movieId);
   const searchParams = useSearchParams("play");
   const router = useRouter();
   const pathname = usePathname();
@@ -36,30 +41,30 @@ const MovieDetailClientComponent = ({
 
   const backdropSrc =
     getImageUrl(
-      movie.backdrop_path || movie.backdrop || movie.poster_path,
+      movie?.backdrop_path || movie?.backdrop || movie?.poster_path,
       "original",
     ) || "https://image.tmdb.org/t/p/original/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg";
 
   const posterSrc =
     getImageUrl(
-      movie.poster_path || movie.thumb || movie.backdrop_path,
+      movie?.poster_path || movie?.thumb || movie?.backdrop_path,
       "w500",
     ) || "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg";
 
   const titleMain =
-    movie.titleMain || movie.title || movie.original_title || "Untitled";
-  const titleSub = movie.titleSub || "";
-  const releaseYear = movie.release_date
+    title || movie?.titleMain || movie?.title || movie?.original_title || "Untitled";
+  const titleSub = movie?.titleSub || "";
+  const releaseYear = movie?.release_date
     ? String(movie.release_date).split("-")[0]
-    : movie.year || "2026";
+    : movie?.year || "2026";
 
   const ratingDisplay =
-    typeof movie.vote_average === "number"
+    typeof movie?.vote_average === "number"
       ? movie.vote_average.toFixed(1)
-      : movie.rating || "8.5";
+      : movie?.rating || "8.5";
 
   const genreList =
-    Array.isArray(movie.genre) && movie.genre.length
+    Array.isArray(movie?.genre) && movie.genre.length
       ? movie.genre
       : ["Action", "Adventure", "Sci-Fi"];
 
@@ -82,8 +87,68 @@ const MovieDetailClientComponent = ({
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
       {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
       {isPlay ? (
-        <section>
-          {/* Display the vieo player here */}
+        <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+          {/* Full-Bleed Backdrop Image with Cinema Blur */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={backdropSrc}
+              alt={titleMain}
+              fill
+              priority
+              className="object-cover object-center blur-2xl scale-110 opacity-30"
+            />
+            {/* Deep Dark Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/95" />
+            <div className="absolute inset-0 bg-radial from-transparent via-black/60 to-black/90" />
+          </div>
+
+          <div className="relative z-10 mx-auto w-full max-w-[1600px]">
+            <div
+              className="relative z-10 w-full overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
+            >
+              {/* Top Bar */}
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <Film className="h-5 w-5 text-primary" />
+                  {titleMain && (
+                    <h3 className="text-base font-bold text-white truncate max-w-md">
+                      {titleMain}
+                    </h3>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete("play");
+                    const q = params.toString();
+                    router.push(pathname + (q ? "?" + q : ""));
+                  }}
+                  className="rounded-full border border-white/10 bg-white/5 p-2 text-white/70 hover:bg-white/10 hover:text-white transition cursor-pointer"
+                  aria-label="Close player"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Video Player iFrame Container */}
+              <div className="relative w-full aspect-video bg-black">
+                {movieId ? (
+                  <iframe
+                    src={`https://www.vidking.net/embed/movie/${movieId}?color=e50914&autoPlay=true`}
+                    width="100%"
+                    height="100%"
+                    className="absolute inset-0 h-full w-full border-0"
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-white/50">
+                    Video currently unavailable.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </section>
       ) : (
         <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
@@ -173,11 +238,10 @@ const MovieDetailClientComponent = ({
                 {/* Wishlist Button */}
                 <button
                   onClick={() => addToWishlist(movie)}
-                  className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
-                    isSaved
-                      ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                      : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                  }`}
+                  className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${isSaved
+                    ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                    : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                    }`}
                 >
                   <Bookmark
                     className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
