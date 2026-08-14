@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getImageUrl } from "@/util/helper";
 import { useAuth } from "@/context/AuthContext";
@@ -38,6 +38,7 @@ const MovieDetailClientComponent = ({
   const router = useRouter();
   const pathname = usePathname();
   const isPlay = Boolean(searchParams.get("play"));
+  const iframeRef = useRef(null);
 
   const backdropSrc =
     getImageUrl(
@@ -52,7 +53,11 @@ const MovieDetailClientComponent = ({
     ) || "https://image.tmdb.org/t/p/w500/yihdXomYb5kTeSivtFndMy5iDmf.jpg";
 
   const titleMain =
-    title || movie?.titleMain || movie?.title || movie?.original_title || "Untitled";
+    title ||
+    movie?.titleMain ||
+    movie?.title ||
+    movie?.original_title ||
+    "Untitled";
   const titleSub = movie?.titleSub || "";
   const releaseYear = movie?.release_date
     ? String(movie.release_date).split("-")[0]
@@ -103,9 +108,7 @@ const MovieDetailClientComponent = ({
           </div>
 
           <div className="relative z-10 mx-auto w-full">
-            <div
-              className="relative z-10 w-full overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
-            >
+            <div className="relative z-10 w-full overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]">
               {/* Top Bar */}
               <div className="flex items-center justify-between border-b border-white/10 lg:px-6 px-4 py-3 lg:py-4">
                 <div className="flex items-center gap-2 w-[85%]">
@@ -121,7 +124,7 @@ const MovieDetailClientComponent = ({
                     const params = new URLSearchParams(searchParams.toString());
                     params.delete("play");
                     const q = params.toString();
-                    router.push(pathname + (q ? "?" + q : ""));
+                    router.replace(pathname + (q ? "?" + q : ""));
                   }}
                   className="rounded-full border border-white/10 bg-white/5 p-1.5 text-white/70 hover:bg-white/10 hover:text-white transition cursor-pointer"
                   aria-label="Close player"
@@ -134,6 +137,7 @@ const MovieDetailClientComponent = ({
               <div className="relative w-full aspect-video bg-black">
                 {movieId ? (
                   <iframe
+                    ref={iframeRef}
                     src={`https://www.vidking.net/embed/movie/${movieId}?color=e50914&autoPlay=true`}
                     width="100%"
                     height="100%"
@@ -238,10 +242,11 @@ const MovieDetailClientComponent = ({
                 {/* Wishlist Button */}
                 <button
                   onClick={() => addToWishlist(movie)}
-                  className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${isSaved
-                    ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                    : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                    }`}
+                  className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
+                    isSaved
+                      ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                      : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                  }`}
                 >
                   <Bookmark
                     className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}

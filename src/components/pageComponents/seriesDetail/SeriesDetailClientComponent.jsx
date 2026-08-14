@@ -23,6 +23,7 @@ import {
   Check,
 } from "lucide-react";
 import SeriesModal from "@/components/common/SeriesModal";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SeriesDetailClientComponent = ({
   series,
@@ -48,6 +49,12 @@ const SeriesDetailClientComponent = ({
   const [shareToast, setShareToast] = useState(false);
   const { addToWishlist, isMovieInWishlist } = useAuth();
   const isSaved = isMovieInWishlist(series.id);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const season = searchParams.get("season");
+  const episode = searchParams.get("episode");
 
   // Close season dropdown on click outside
   useEffect(() => {
@@ -138,18 +145,46 @@ const SeriesDetailClientComponent = ({
   };
 
   const handlePlayEpisode = (ep) => {
-    setActiveEpisode(ep);
-    setIsVideoOpen(true);
+    // setActiveEpisode(ep);
+    // setIsVideoOpen(true);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("season");
+    params.delete("episode");
+
+    params.set("season", ep.season_number);
+    params.set("episode", ep.episode_number);
+
+    router.push(pathname + "?" + params.toString());
   };
 
   const handlePlaySeries = () => {
-    const ep1 = episodes[0] || {
-      name: "Episode 1",
-      episode_number: 1,
-      season_number: selectedSeason,
-    };
-    setActiveEpisode(ep1);
-    setIsVideoOpen(true);
+    // const ep1 = episodes[0] || {
+    //   name: "Episode 1",
+    //   episode_number: 1,
+    //   season_number: selectedSeason,
+    // };
+    // setActiveEpisode(ep1);
+    // setIsVideoOpen(true);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("season");
+    params.delete("episode");
+
+    params.set("season", selectedSeason);
+    params.set("episode", "1");
+
+    router.push(pathname + "?" + params.toString());
+  };
+
+  // Handle select season
+  const handleSelectSeason = (num) => {
+    setSelectedSeason(num);
+    setIsSeasonOpen(false);
+    
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("season");
+    params.delete("episode");
+    params.set("season", num);
+    router.push(pathname + "?" + params.toString());
   };
 
   // Filter and Sort Episodes
@@ -168,132 +203,140 @@ const SeriesDetailClientComponent = ({
       return a.episode_number - b.episode_number;
     });
 
+  console.log("Season Episodes:", season, episode);
+
   return (
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
-      {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
-      <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
-        {/* Full-Bleed Backdrop Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={backdropSrc}
-            alt={titleMain}
-            fill
-            priority
-            className="object-cover object-center"
-          />
-          {/* Dark Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
-        </div>
-
-        {/* Hero Content Grid */}
-        <div className="relative z-10 mx-auto w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          {/* Main Detail Content (Col 1-8) */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* Metadata Badges */}
-            <div className="flex flex-wrap items-center gap-2.5 text-xs text-white/80">
-              <span className="flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-500/40 px-3 py-1 text-amber-400 font-bold">
-                <Star className="h-3.5 w-3.5 fill-amber-400" />
-                <span>IMDb {ratingDisplay}</span>
-              </span>
-              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
-                {releaseYear}
-              </span>
-              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
-                {series.number_of_seasons || 3}{" "}
-                {series.number_of_seasons === 1 ? "Season" : "Seasons"}
-              </span>
-              <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium uppercase">
-                {series.adult ? "18+" : "TV-MA"}
-              </span>
-              <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-semibold text-primary">
-                Ultra HD 4K
-              </span>
-            </div>
-
-            {/* Title */}
-            <div className="space-y-1">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none uppercase">
-                {titleMain}
-              </h1>
-              {titleSub && (
-                <p className="text-xl sm:text-2xl font-bold text-primary">
-                  {titleSub}
-                </p>
-              )}
-            </div>
-
-            {/* Genres */}
-            <p className="text-sm font-semibold text-white/70">
-              Genre:&nbsp;
-              <span className="text-white">{genreList.join(" • ")}</span>
-            </p>
-
-            {/* Overview / Synopsis */}
-            <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-white/75 line-clamp-4">
-              {series.overview ||
-                "Binge-watch this acclaimed original TV series in full 4K Ultra HD on MUVI Cinema."}
-            </p>
-
-            {/* ACTION BUTTONS */}
-            <div className="flex flex-wrap items-center gap-3 pt-4">
-              {/* Play Button */}
-              <button
-                onClick={handlePlaySeries}
-                className="group flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-[0_0_30px_rgba(255,59,48,0.45)] transition hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(255,59,48,0.6)]"
-              >
-                <PlayCircle className="h-5 w-5" />
-                <span>Play Season {selectedSeason}</span>
-              </button>
-
-              {/* Watch Trailer Button */}
-              <button
-                onClick={() => setIsTrailerOpen(true)}
-                className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
-              >
-                <Tv className="h-4 w-4" />
-                <span>Watch Trailer</span>
-              </button>
-
-              {/* Wishlist Button */}
-              <button
-                onClick={() => addToWishlist(series)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
-                  isSaved
-                    ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                    : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                }`}
-              >
-                <Bookmark
-                  className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
-                />
-                <span>{isSaved ? "Saved" : "In My List"}</span>
-              </button>
-
-              {/* Share Button */}
-              <button
-                onClick={handleShare}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
-                aria-label="Share series"
-              >
-                <Share2 className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Side Poster Card (Col 9-12) */}
-          <div className="hidden lg:block lg:col-span-4">
-            <div className="relative aspect-[2/3] w-72 ml-auto overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+      {season && episode ? (
+        <></>
+      ) : (
+        <>
+          {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
+          <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+            {/* Full-Bleed Backdrop Image */}
+            <div className="absolute inset-0 z-0">
               <Image
-                src={posterSrc}
+                src={backdropSrc}
                 alt={titleMain}
                 fill
-                className="object-cover"
+                priority
+                className="object-cover object-center"
               />
+              {/* Dark Gradients */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
             </div>
-          </div>
-        </div>
-      </section>
+
+            {/* Hero Content Grid */}
+            <div className="relative z-10 mx-auto w-full max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+              {/* Main Detail Content (Col 1-8) */}
+              <div className="lg:col-span-8 space-y-6">
+                {/* Metadata Badges */}
+                <div className="flex flex-wrap items-center gap-2.5 text-xs text-white/80">
+                  <span className="flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-500/40 px-3 py-1 text-amber-400 font-bold">
+                    <Star className="h-3.5 w-3.5 fill-amber-400" />
+                    <span>IMDb {ratingDisplay}</span>
+                  </span>
+                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
+                    {releaseYear}
+                  </span>
+                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium">
+                    {series.number_of_seasons || 3}{" "}
+                    {series.number_of_seasons === 1 ? "Season" : "Seasons"}
+                  </span>
+                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium uppercase">
+                    {series.adult ? "18+" : "TV-MA"}
+                  </span>
+                  <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-semibold text-primary">
+                    Ultra HD 4K
+                  </span>
+                </div>
+
+                {/* Title */}
+                <div className="space-y-1">
+                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none uppercase">
+                    {titleMain}
+                  </h1>
+                  {titleSub && (
+                    <p className="text-xl sm:text-2xl font-bold text-primary">
+                      {titleSub}
+                    </p>
+                  )}
+                </div>
+
+                {/* Genres */}
+                <p className="text-sm font-semibold text-white/70">
+                  Genre:&nbsp;
+                  <span className="text-white">{genreList.join(" • ")}</span>
+                </p>
+
+                {/* Overview / Synopsis */}
+                <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-white/75 line-clamp-4">
+                  {series.overview ||
+                    "Binge-watch this acclaimed original TV series in full 4K Ultra HD on MUVI Cinema."}
+                </p>
+
+                {/* ACTION BUTTONS */}
+                <div className="flex flex-wrap items-center gap-3 pt-4">
+                  {/* Play Button */}
+                  <button
+                    onClick={handlePlaySeries}
+                    className="group flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-[0_0_30px_rgba(255,59,48,0.45)] transition hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(255,59,48,0.6)]"
+                  >
+                    <PlayCircle className="h-5 w-5" />
+                    <span>Play Season {selectedSeason}</span>
+                  </button>
+
+                  {/* Watch Trailer Button */}
+                  <button
+                    onClick={() => setIsTrailerOpen(true)}
+                    className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
+                  >
+                    <Tv className="h-4 w-4" />
+                    <span>Watch Trailer</span>
+                  </button>
+
+                  {/* Wishlist Button */}
+                  <button
+                    onClick={() => addToWishlist(series)}
+                    className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition ${
+                      isSaved
+                        ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                        : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                    }`}
+                  >
+                    <Bookmark
+                      className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
+                    />
+                    <span>{isSaved ? "Saved" : "In My List"}</span>
+                  </button>
+
+                  {/* Share Button */}
+                  <button
+                    onClick={handleShare}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20"
+                    aria-label="Share series"
+                  >
+                    <Share2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Side Poster Card (Col 9-12) */}
+              <div className="hidden lg:block lg:col-span-4">
+                <div className="relative aspect-[2/3] w-72 ml-auto overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+                  <Image
+                    src={posterSrc}
+                    alt={titleMain}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
       {/* ── SERIES PLAYLIST / EPISODES SECTION ── */}
       <section className="mx-auto max-w-[1600px] px-4 sm:px-8 lg:px-12 py-10 space-y-6">
@@ -354,10 +397,7 @@ const SeriesDetailClientComponent = ({
                             <button
                               key={`season-item-${num}`}
                               type="button"
-                              onClick={() => {
-                                setSelectedSeason(num);
-                                setIsSeasonOpen(false);
-                              }}
+                              onClick={() => handleSelectSeason(num)}
                               className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 ${
                                 isSelected
                                   ? "bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
