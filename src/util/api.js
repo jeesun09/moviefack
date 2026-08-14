@@ -93,6 +93,163 @@ export const getFeaturedActionMovies = async (id = 28) => {
   }
 };
 
+export const getMoviesByLanguage = async (
+  languageCode = "hi",
+  sortBy = "popularity.desc",
+  page = 1,
+) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      const url = new URL(
+        `${TMDB_BASE_URL}/discover/movie?with_original_language=${encodeURIComponent(
+          languageCode,
+        )}&sort_by=${sortBy}&vote_count.gte=5&page=${page}`,
+      );
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error(
+        `Server-side getMoviesByLanguage (${languageCode}) error:`,
+        error,
+      );
+    }
+    return fallbackMovies.map(normalizeTmdbMovie);
+  }
+
+  try {
+    const response = await fetch(
+      `/api/featured-language?lang=${encodeURIComponent(
+        languageCode,
+      )}&sortBy=${sortBy}&page=${page}`,
+      { cache: "no-store" },
+    );
+    if (!response.ok) {
+      return fallbackMovies.map(normalizeTmdbMovie);
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) && data.length
+      ? data.map(normalizeTmdbMovie)
+      : fallbackMovies.map(normalizeTmdbMovie);
+  } catch (error) {
+    console.error(
+      `Client-side getMoviesByLanguage (${languageCode}) error:`,
+      error,
+    );
+    return fallbackMovies.map(normalizeTmdbMovie);
+  }
+};
+
+export const getTopRatedMovies = async (page = 1) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      const url = new URL(`${TMDB_BASE_URL}/movie/top_rated?page=${page}`);
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error("Server-side getTopRatedMovies error:", error);
+    }
+    return fallbackMovies.map(normalizeTmdbMovie);
+  }
+
+  try {
+    const response = await fetch(`/api/featured-genre?genreId=top_rated`, {
+      cache: "no-store",
+    });
+    if (!response.ok) return fallbackMovies.map(normalizeTmdbMovie);
+    const data = await response.json();
+    return Array.isArray(data) && data.length
+      ? data.map(normalizeTmdbMovie)
+      : fallbackMovies.map(normalizeTmdbMovie);
+  } catch (error) {
+    return fallbackMovies.map(normalizeTmdbMovie);
+  }
+};
+
+export const getAllTimeFavourites = async (page = 1) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      const url = new URL(
+        `${TMDB_BASE_URL}/discover/movie?sort_by=vote_average.desc&vote_count.gte=2500&page=${page}`,
+      );
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error("Server-side getAllTimeFavourites error:", error);
+    }
+  }
+  return getTopRatedMovies(page);
+};
+
+export const getTvShowsByLanguage = async (languageCode = "bn", page = 1) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      const url = new URL(
+        `${TMDB_BASE_URL}/discover/tv?with_original_language=${encodeURIComponent(
+          languageCode,
+        )}&sort_by=popularity.desc&vote_count.gte=1&page=${page}`,
+      );
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error(
+        `Server-side getTvShowsByLanguage (${languageCode}) error:`,
+        error,
+      );
+    }
+    return fallbackMovies.map(normalizeTmdbMovie);
+  }
+  return fallbackMovies.map(normalizeTmdbMovie);
+};
+
 export const getTvShows = async (genreId) => {
   if (typeof window !== "undefined") {
     try {
@@ -135,6 +292,61 @@ export const getTvShows = async (genreId) => {
     }
   } catch (error) {
     console.error("getTvShows error:", error);
+  }
+  return fallbackMovies.map(normalizeTmdbMovie);
+};
+
+export const getActorMovies = async (personId = "5344", page = 1) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      const url = new URL(
+        `${TMDB_BASE_URL}/discover/movie?with_cast=${personId}&sort_by=popularity.desc&page=${page}`,
+      );
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error("getActorMovies error:", error);
+    }
+  }
+  return fallbackMovies.map(normalizeTmdbMovie);
+};
+
+export const getMarvelMovies = async (page = 1) => {
+  if (typeof window === "undefined") {
+    try {
+      const apiKey = getCleanKey();
+      const token = getCleanToken();
+      // Marvel Studios company ID is 420
+      const url = new URL(
+        `${TMDB_BASE_URL}/discover/movie?with_companies=420&sort_by=popularity.desc&page=${page}`,
+      );
+      if (apiKey) url.searchParams.set("api_key", apiKey);
+
+      const headers = { "Content-Type": "application/json" };
+      if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
+
+      const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data?.results) && data.results.length) {
+          return data.results.map(normalizeTmdbMovie);
+        }
+      }
+    } catch (error) {
+      console.error("getMarvelMovies error:", error);
+    }
   }
   return fallbackMovies.map(normalizeTmdbMovie);
 };

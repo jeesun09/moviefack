@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
-import { bannerMovies as fallbackMovies } from "@/components/movieData";
 import {
   normalizeTmdbMovie,
   TMDB_ACCESS_TOKEN,
   TMDB_API_KEY,
   TMDB_BASE_URL,
 } from "@/constants/config";
+import { bannerMovies as fallbackMovies } from "@/components/movieData";
+import { NextResponse } from "next/server";
 
 const apiKey = TMDB_API_KEY
   ? TMDB_API_KEY.trim().replace(/^['"]|['"]$/g, "")
@@ -22,10 +22,10 @@ export async function GET(req) {
   const page = searchParams.get("page") || "1";
 
   try {
-    const url = new URL(`${TMDB_BASE_URL}/discover/tv`);
+    const url = new URL(`${TMDB_BASE_URL}/discover/movie`);
     url.searchParams.set("sort_by", sortBy);
     url.searchParams.set("page", page);
-    url.searchParams.set("vote_count.gte", "1");
+    url.searchParams.set("vote_count.gte", "3");
 
     if (genreId && genreId !== "all") {
       url.searchParams.set("with_genres", genreId);
@@ -68,7 +68,7 @@ export async function GET(req) {
       { status: 200 },
     );
   } catch (error) {
-    console.error("Series API route failed:", error);
+    console.error("Movies discover proxy failed:", error);
     return NextResponse.json(
       {
         results: fallbackMovies.map(normalizeTmdbMovie),

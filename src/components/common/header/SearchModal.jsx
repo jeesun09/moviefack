@@ -120,7 +120,7 @@ const SearchModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Modal Body */}
-            <div className="max-h-[60vh] overflow-y-auto p-5 scrollbar-thin scrollbar-thumb-white/10">
+            <div className="max-h-[60dvh] overflow-y-auto p-5 scrollbar-thin scrollbar-thumb-white/10">
               {/* Quick Suggestion Tags (When query is empty) */}
               {!query.trim() && (
                 <div className="space-y-4 py-2">

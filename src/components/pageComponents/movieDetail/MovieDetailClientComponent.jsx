@@ -195,17 +195,15 @@ const MovieDetailClientComponent = ({
       {/* ── 100% FULL-SCREEN CINEMA PLAYER (MATCHING REFERENCE DESIGN) ── */}
       {isPlay && (
         <div
-          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${
-            !controlsVisible ? "cursor-none" : ""
-          }`}
+          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${!controlsVisible ? "cursor-none" : ""
+            }`}
         >
           {/* Top-Left Back Arrow Button (Prominent & Always Accessible on Mobile) */}
           <button
             type="button"
             onClick={handleCloseVideoPlayer}
-            className={`fixed top-4 left-4 z-[100] flex h-10 w-11 items-center justify-center rounded-xl border border-white/20 bg-black/85 text-white backdrop-blur-xl transition duration-200 hover:bg-white/20 hover:border-white/40 cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.8)] active:scale-95 ${
-              controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
+            className={`fixed top-4 left-4 z-[100] flex h-10 w-11 items-center justify-center rounded-xl border border-white/20 bg-black/85 text-white backdrop-blur-xl transition duration-200 hover:bg-white/20 hover:border-white/40 cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.8)] active:scale-95 ${controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
             title="Back to Movie (Esc)"
             aria-label="Back to movie details"
           >
@@ -280,7 +278,7 @@ const MovieDetailClientComponent = ({
       )}
 
       {/* ── STANDARD MOVIE DETAILS HERO BANNER ── */}
-      <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+      <section className="relative w-full min-h-[85dvh] lg:min-h-[90dvh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
         {/* Full-Bleed Backdrop Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -291,7 +289,7 @@ const MovieDetailClientComponent = ({
             className="object-cover object-center"
           />
           {/* Deep Dark Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
         </div>
 
@@ -367,11 +365,10 @@ const MovieDetailClientComponent = ({
               {/* Wishlist Button */}
               <button
                 onClick={() => addToWishlist(movie)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
-                  isSaved
-                    ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
-                    : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                }`}
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${isSaved
+                  ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
+                  : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
+                  }`}
               >
                 <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
                 <span>{isSaved ? "Saved" : "My List"}</span>

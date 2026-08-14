@@ -5,6 +5,7 @@ import Header from "@/components/common/header/Header";
 import { AuthProvider } from "@/context/AuthContext";
 import WishlistToast from "@/components/common/WishlistToast";
 import PageInitialLoader from "@/components/common/PageInitialLoader";
+import CustomCursor from "@/components/common/CustomCursor";
 import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
       className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <CustomCursor />
         <AuthProvider>
           <PageInitialLoader />
           <Header />

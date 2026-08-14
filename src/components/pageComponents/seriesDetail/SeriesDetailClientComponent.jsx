@@ -622,7 +622,7 @@ const SeriesDetailClientComponent = ({
       )}
 
       {/* ── STANDARD TV SERIES HERO DETAILS BANNER ── */}
-      <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+      <section className="relative w-full min-h-[85dvh] lg:min-h-[90dvh] flex items-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
         {/* Full-Bleed Backdrop Image */}
         <div className="absolute inset-0 z-0">
           <Image
