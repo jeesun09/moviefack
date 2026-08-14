@@ -5,6 +5,7 @@ import Header from "@/components/common/header/Header";
 import { AuthProvider } from "@/context/AuthContext";
 import WishlistToast from "@/components/common/WishlistToast";
 import PageInitialLoader from "@/components/common/PageInitialLoader";
+import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
           <Footer />
           <WishlistToast />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
