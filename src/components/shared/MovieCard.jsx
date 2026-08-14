@@ -57,8 +57,8 @@ const MovieCard = ({ movie = {} }) => {
             onClick={handleBookmarkClick}
             aria-label="Add to wishlist"
             className={`absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full border transition duration-300 ${isSaved
-                ? "border-primary bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.5)]"
-                : "border-white/20 bg-black/50 text-white/80 backdrop-blur-md hover:border-primary hover:bg-primary hover:text-white"
+              ? "border-primary bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.5)]"
+              : "border-white/20 bg-black/50 text-white/80 backdrop-blur-md hover:border-primary hover:bg-primary hover:text-white"
               }`}
           >
             <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />

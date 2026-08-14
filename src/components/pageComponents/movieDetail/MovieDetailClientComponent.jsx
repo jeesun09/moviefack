@@ -282,10 +282,11 @@ const MovieDetailClientComponent = ({
         {/* Full-Bleed Backdrop Image */}
         <div className="absolute inset-0 z-0">
           <Image
+            loading="lazy"
             src={backdropSrc}
             alt={titleMain}
             fill
-            priority
+
             className="object-cover object-center"
           />
           {/* Deep Dark Gradient Overlays */}
@@ -383,6 +384,7 @@ const MovieDetailClientComponent = ({
           <div className="hidden lg:block lg:col-span-4">
             <div className="relative aspect-[2/3] w-72 ml-auto overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
               <Image
+                loading="lazy"
                 src={posterSrc}
                 alt={titleMain}
                 fill
@@ -413,6 +415,7 @@ const MovieDetailClientComponent = ({
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white/10 flex items-center justify-center">
                     {actorPhoto ? (
                       <Image
+                        loading="lazy"
                         src={actorPhoto}
                         alt={actor.name}
                         fill

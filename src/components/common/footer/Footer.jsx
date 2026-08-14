@@ -19,6 +19,7 @@ const Footer = () => {
         <Link href="/" className="inline-flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-2 shadow-[0_0_25px_rgba(255,59,48,0.3)] transition duration-300 group-hover:scale-105">
             <Image
+              loading="lazy"
               src={M}
               alt="MUVI logo"
               unoptimized

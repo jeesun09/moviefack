@@ -40,10 +40,11 @@ export default function CinemaSpotlightBanner({
       {/* Full Bleed Backdrop Image */}
       <div className="relative min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] w-full flex items-center">
         <Image
+          loading="lazy"
           src={backdrop}
           alt={titleMain}
           fill
-          priority
+
           className="object-cover object-center"
         />
 
@@ -107,11 +108,10 @@ export default function CinemaSpotlightBanner({
               <button
                 type="button"
                 onClick={() => addToWishlist(movie)}
-                className={`flex h-11 w-11 items-center justify-center rounded-full border transition cursor-pointer ${
-                  isSaved
+                className={`flex h-11 w-11 items-center justify-center rounded-full border transition cursor-pointer ${isSaved
                     ? "border-primary bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
                     : "border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20"
-                }`}
+                  }`}
                 title={isSaved ? "Saved in List" : "Add to List"}
               >
                 <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
@@ -126,6 +126,7 @@ export default function CinemaSpotlightBanner({
               className="group relative aspect-[2/3] w-56 sm:w-64 lg:w-72 overflow-hidden rounded-3xl border border-white/20 bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:scale-105 hover:border-primary hover:shadow-[0_25px_70px_rgba(255,59,48,0.4)]"
             >
               <Image
+                loading="lazy"
                 src={poster}
                 alt={titleMain}
                 fill

@@ -166,6 +166,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                         {/* Thumbnail */}
                         <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-xl bg-white/5">
                           <Image
+                           loading="lazy"
                             src={posterSrc}
                             alt={movie.title || "poster"}
                             fill

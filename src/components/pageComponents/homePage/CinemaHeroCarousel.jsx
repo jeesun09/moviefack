@@ -105,10 +105,10 @@ export default function CinemaHeroCarousel({
               <div className="relative min-h-[440px] sm:min-h-[500px] lg:min-h-[540px] w-full flex items-center bg-black">
                 {/* Backdrop Image */}
                 <Image
+                  loading="lazy"
                   src={backdrop}
                   alt={titleMain}
                   fill
-                  priority
                   className="object-cover object-center"
                 />
 
@@ -177,6 +177,7 @@ export default function CinemaHeroCarousel({
                       className="group relative aspect-[2/3] w-64 overflow-hidden rounded-3xl border border-white/20 bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:scale-105 hover:border-primary hover:shadow-[0_25px_70px_rgba(255,59,48,0.4)]"
                     >
                       <Image
+                        loading="lazy"
                         src={poster}
                         alt={titleMain}
                         fill

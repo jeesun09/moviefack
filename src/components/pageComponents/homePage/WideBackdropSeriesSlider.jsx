@@ -109,6 +109,7 @@ export default function WideBackdropSeriesSlider({
                 {/* 16:9 Landscape Card */}
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/15 bg-surface shadow-lg transition-all duration-300 group-hover:scale-[1.03] group-hover:border-primary/80 group-hover:shadow-[0_10px_35px_rgba(255,59,48,0.35)]">
                   <Image
+                   loading="lazy"
                     src={backdrop}
                     alt={title}
                     fill

@@ -161,6 +161,7 @@ export default function ActorCircleSlider() {
               {/* Round Avatar Container with Glowing Border */}
               <div className="relative h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-full border-2 border-white/20 bg-surface shadow-[0_0_20px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:shadow-[0_0_25px_rgba(255,59,48,0.6)]">
                 <Image
+                 loading="lazy"
                   src={actor.photo || actor.fallback}
                   alt={actor.name}
                   fill

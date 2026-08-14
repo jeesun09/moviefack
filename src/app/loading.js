@@ -14,12 +14,13 @@ export default function Loading() {
         {/* Brand Logo */}
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-3 shadow-[0_0_30px_rgba(255,59,48,0.35)]">
           <Image
+            loading="lazy"
             src={M}
             alt="Logo"
             unoptimized
             width={48}
             height={48}
-            priority
+
             className="h-full w-full object-contain drop-shadow-[0_0_10px_rgba(255,59,48,0.7)]"
           />
         </div>

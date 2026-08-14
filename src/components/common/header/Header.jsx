@@ -120,6 +120,7 @@ const Header = () => {
                 className="w-10 h-10 p-2 border border-primary bg-background/80 rounded-full flex items-center justify-center"
               >
                 <Image
+                 loading="lazy"
                   src={M}
                   alt="logo"
                   unoptimized
@@ -195,6 +196,7 @@ const Header = () => {
             className="w-25 h-full py-1 px-2 rounded-full bg-background flex items-center justify-center"
           >
             <Image
+             loading="lazy"
               src={LOGO}
               alt="logo"
               unoptimized

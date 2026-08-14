@@ -126,6 +126,7 @@ export default function Top10RankedSlider({
                 {/* Poster Card overlapping number */}
                 <div className="relative z-10 ml-auto aspect-[2/3] w-[170px] sm:w-[195px] md:w-[210px] overflow-hidden rounded-2xl border border-white/15 bg-surface shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 group-hover:border-primary group-hover:shadow-[0_20px_50px_rgba(255,59,48,0.35)]">
                   <Image
+                   loading="lazy"
                     src={poster}
                     alt={titleMain}
                     fill
