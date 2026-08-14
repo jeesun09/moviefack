@@ -20,6 +20,7 @@ import {
   Check,
 } from "lucide-react";
 import VideoModal from "@/components/common/VideoModal";
+import ShareFloatingMenu from "@/components/common/ShareFloatingMenu";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const MOVIE_SERVERS = [
@@ -376,14 +377,8 @@ const MovieDetailClientComponent = ({
                 <span>{isSaved ? "Saved" : "My List"}</span>
               </button>
 
-              {/* Share Button */}
-              <button
-                onClick={handleShare}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/20 cursor-pointer"
-                aria-label="Share movie"
-              >
-                <Share2 className="h-4 w-4" />
-              </button>
+              {/* Expandable Radial Share Menu */}
+              <ShareFloatingMenu title={titleMain} />
             </div>
           </div>
 
