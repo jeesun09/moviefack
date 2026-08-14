@@ -23,7 +23,6 @@ import {
   ArrowLeft,
   LayoutGrid,
   X,
-  Film,
   Play,
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -414,16 +413,21 @@ const SeriesDetailClientComponent = ({
             <div className="w-11" />
           </div>
 
-          {/* Left Floating Button to Re-Open Drawer if Hidden (Matching Reference) */}
-          {!isDrawerOpen && (
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="absolute left-5 top-1/2 -translate-y-1/2 z-40 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-black/80 text-white shadow-2xl backdrop-blur-md transition hover:bg-white/10 hover:border-primary cursor-pointer"
-              title="Show Episodes Drawer"
-            >
-              <LayoutGrid className="h-5 w-5 text-white" />
-            </button>
-          )}
+          {/* Floating Toggle Button to Open/Close Episodes Drawer (Matching Screenshot 1 & 2) */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsDrawerOpen((prev) => !prev);
+            }}
+            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:scale-110 hover:bg-white/20 hover:border-white/45 cursor-pointer active:scale-95 ${
+              isDrawerOpen ? "ring-2 ring-primary/60" : ""
+            }`}
+            title={isDrawerOpen ? "Hide Episodes Drawer" : "Show Episodes Drawer"}
+            aria-label="Toggle episodes list"
+          >
+            <LayoutGrid className="h-5 w-5 text-white" />
+          </button>
 
           {/* Right Side Episodes Drawer Panel (Matching Reference Design) */}
           <AnimatePresence>
@@ -432,7 +436,7 @@ const SeriesDetailClientComponent = ({
                 initial={{ opacity: 0, x: 80 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 80 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
                 className="absolute right-3 sm:right-5 top-3 sm:top-5 bottom-3 sm:bottom-5 z-40 w-[310px] sm:w-[360px] md:w-[380px] rounded-3xl border border-white/15 bg-[#0f0f0f]/95 shadow-[0_25px_80px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col p-4 overflow-hidden"
               >
                 {/* Drawer Header */}
@@ -440,9 +444,15 @@ const SeriesDetailClientComponent = ({
                   <span className="text-[11px] font-bold text-white/80">
                     Episodes
                   </span>
+                  {/* HIDE Button (Closes Drawer) */}
                   <button
-                    onClick={() => setIsDrawerOpen(false)}
-                    className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white/70 hover:bg-white/15 hover:text-white transition cursor-pointer"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDrawerOpen(false);
+                    }}
+                    className="flex items-center gap-1 rounded-lg border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white hover:bg-white/25 hover:border-white/30 transition cursor-pointer z-50 active:scale-95"
+                    title="Hide Episodes Drawer"
                   >
                     <span>HIDE</span>
                   </button>
