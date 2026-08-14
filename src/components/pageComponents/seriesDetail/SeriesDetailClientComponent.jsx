@@ -332,17 +332,15 @@ const SeriesDetailClientComponent = ({
       {/* ── 100% FULL-SCREEN SERIES CINEMA PLAYER WITH EPISODES DRAWER ── */}
       {isPlaying && (
         <div
-          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${
-            !controlsVisible && !isDrawerOpen ? "cursor-none" : ""
-          }`}
+          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${!controlsVisible && !isDrawerOpen ? "cursor-none" : ""
+            }`}
         >
           {/* Top Bar Floating Controls */}
           <div
-            className={`absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-6 transition-opacity duration-300 ${
-              controlsVisible || isDrawerOpen
+            className={`absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-6 transition-opacity duration-300 ${controlsVisible || isDrawerOpen
                 ? "opacity-100"
                 : "opacity-0 pointer-events-none"
-            }`}
+              }`}
           >
             {/* Top-Left: Back Arrow Button */}
             <button
@@ -363,9 +361,8 @@ const SeriesDetailClientComponent = ({
                 >
                   <span>CHANGE SERVER</span>
                   <ChevronDown
-                    className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${
-                      isServerOpen ? "rotate-180" : ""
-                    }`}
+                    className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${isServerOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -386,11 +383,10 @@ const SeriesDetailClientComponent = ({
                               setIsServerOpen(false);
                               setIframeKey(Date.now());
                             }}
-                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition cursor-pointer ${
-                              isSelected
+                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition cursor-pointer ${isSelected
                                 ? "bg-primary text-white shadow-[0_0_12px_rgba(255,59,48,0.5)]"
                                 : "text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
+                              }`}
                           >
                             <div className="text-left">
                               <p className="leading-tight">{server.name}</p>
@@ -425,13 +421,12 @@ const SeriesDetailClientComponent = ({
               e.stopPropagation();
               setIsDrawerOpen((prev) => !prev);
             }}
-            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:bg-white/20 hover:border-white/45 cursor-grab active:cursor-grabbing ${
-              isDrawerOpen ? "ring-2 ring-primary/60" : ""
-            }`}
+            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:bg-white/20 hover:border-white/45 cursor-grab active:cursor-grabbing ${isDrawerOpen ? "ring-2 ring-primary/60" : ""
+              }`}
             title={isDrawerOpen ? "Hide Episodes Drawer (Draggable)" : "Show Episodes Drawer (Draggable)"}
             aria-label="Toggle episodes list"
           >
-            <LayoutGrid className="h-5 w-5 text-white pointer-events-none" />
+            <LayoutGrid className="h-4 w-4 text-white pointer-events-none" />
           </motion.button>
 
           {/* Right Side Episodes Drawer Panel (Draggable Anywhere) */}
@@ -444,7 +439,7 @@ const SeriesDetailClientComponent = ({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 80 }}
                 transition={{ duration: 0.22, ease: "easeOut" }}
-                className="absolute right-3 sm:right-5 top-3 sm:top-5 bottom-3 sm:bottom-5 z-40 w-[310px] sm:w-[360px] md:w-[380px] rounded-3xl border border-white/15 bg-[#0f0f0f]/95 shadow-[0_25px_80px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col p-4 overflow-hidden"
+                className="absolute right-3 sm:right-5 bottom-3 sm:bottom-5 bottom-3 sm:bottom-5 z-40 w-[310px] md:h-full h-[400px] sm:w-[360px] md:w-[380px] rounded-3xl border border-white/15 bg-[#0f0f0f]/95 shadow-[0_25px_80px_rgba(0,0,0,0.95)] backdrop-blur-2xl flex flex-col p-4 overflow-hidden"
               >
                 {/* Drawer Header with Drag Handle */}
                 <div className="flex items-center justify-between border-b border-white/10 pb-3 cursor-grab active:cursor-grabbing select-none">
@@ -488,9 +483,8 @@ const SeriesDetailClientComponent = ({
                     >
                       <span>Season {selectedSeason}</span>
                       <ChevronDown
-                        className={`h-3 w-3 text-white/70 transition-transform duration-200 ${
-                          inDrawerSeasonOpen ? "rotate-180" : ""
-                        }`}
+                        className={`h-3 w-3 text-white/70 transition-transform duration-200 ${inDrawerSeasonOpen ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
 
@@ -502,11 +496,10 @@ const SeriesDetailClientComponent = ({
                             <button
                               key={`drawer-season-${num}`}
                               onClick={() => handleSelectSeason(num)}
-                              className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-bold transition cursor-pointer ${
-                                isSelected
+                              className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-bold transition cursor-pointer ${isSelected
                                   ? "bg-primary text-white"
                                   : "text-white/80 hover:bg-white/10"
-                              }`}
+                                }`}
                             >
                               <span>Season {num}</span>
                               {isSelected && <Check className="h-3 w-3" />}
@@ -532,11 +525,10 @@ const SeriesDetailClientComponent = ({
                   {/* Sort Button */}
                   <button
                     onClick={() => setInDrawerSortDesc((prev) => !prev)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-xl border transition shrink-0 cursor-pointer ${
-                      inDrawerSortDesc
+                    className={`flex h-8 w-8 items-center justify-center rounded-xl border transition shrink-0 cursor-pointer ${inDrawerSortDesc
                         ? "border-primary bg-primary/20 text-primary"
                         : "border-white/15 bg-white/5 text-white/70 hover:border-white/30"
-                    }`}
+                      }`}
                     title={inDrawerSortDesc ? "Ascending" : "Descending"}
                   >
                     <ArrowUpDown className="h-3.5 w-3.5" />
@@ -563,11 +555,10 @@ const SeriesDetailClientComponent = ({
                         <div
                           key={`drawer-ep-${ep.id || ep.episode_number}`}
                           onClick={() => handlePlayEpisode(ep)}
-                          className={`group relative flex items-center gap-3 rounded-2xl border p-2.5 transition duration-200 cursor-pointer ${
-                            isCurrent
+                          className={`group relative flex items-center gap-3 rounded-2xl border p-2.5 transition duration-200 cursor-pointer ${isCurrent
                               ? "border-primary bg-primary/15 shadow-[0_0_15px_rgba(255,59,48,0.35)]"
                               : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.08]"
-                          }`}
+                            }`}
                         >
                           {/* Thumbnail Container */}
                           <div className="relative aspect-video w-24 sm:w-28 shrink-0 overflow-hidden rounded-xl bg-black">
@@ -594,9 +585,8 @@ const SeriesDetailClientComponent = ({
                           <div className="min-w-0 flex-1 space-y-1">
                             <div className="flex items-center justify-between gap-1">
                               <h4
-                                className={`text-xs font-bold truncate leading-tight ${
-                                  isCurrent ? "text-primary" : "text-white"
-                                }`}
+                                className={`text-xs font-bold truncate leading-tight ${isCurrent ? "text-primary" : "text-white"
+                                  }`}
                               >
                                 {ep.episode_number}. {ep.name}
                               </h4>
@@ -780,11 +770,10 @@ const SeriesDetailClientComponent = ({
               {/* Wishlist Button */}
               <button
                 onClick={() => addToWishlist(series)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
-                  isSaved
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${isSaved
                     ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
                     : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                }`}
+                  }`}
               >
                 <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
                 <span>{isSaved ? "Saved" : "In My List"}</span>
@@ -835,17 +824,15 @@ const SeriesDetailClientComponent = ({
               <button
                 type="button"
                 onClick={() => setIsSeasonOpen((prev) => !prev)}
-                className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${
-                  isSeasonOpen
+                className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${isSeasonOpen
                     ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,59,48,0.3)]"
                     : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
-                }`}
+                  }`}
               >
                 <span>Season {selectedSeason}</span>
                 <ChevronDown
-                  className={`h-4 w-4 text-white/70 transition-transform duration-300 ${
-                    isSeasonOpen ? "rotate-180 text-primary" : ""
-                  }`}
+                  className={`h-4 w-4 text-white/70 transition-transform duration-300 ${isSeasonOpen ? "rotate-180 text-primary" : ""
+                    }`}
                 />
               </button>
 
@@ -866,11 +853,10 @@ const SeriesDetailClientComponent = ({
                             key={`season-item-${num}`}
                             type="button"
                             onClick={() => handleSelectSeason(num)}
-                            className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 cursor-pointer ${
-                              isSelected
+                            className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 cursor-pointer ${isSelected
                                 ? "bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
                                 : "text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
+                              }`}
                           >
                             <span>Season {num}</span>
                             {isSelected && (
@@ -904,11 +890,10 @@ const SeriesDetailClientComponent = ({
               </span>
               <button
                 onClick={() => setIsSortDesc((prev) => !prev)}
-                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition cursor-pointer ${
-                  isSortDesc
+                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition cursor-pointer ${isSortDesc
                     ? "border-primary bg-primary/20 text-primary"
                     : "border-white/15 bg-white/5 text-white/70 hover:border-white/30 hover:text-white"
-                }`}
+                  }`}
                 title={isSortDesc ? "Sort Ascending" : "Sort Descending"}
               >
                 <ArrowUpDown className="h-4 w-4" />
