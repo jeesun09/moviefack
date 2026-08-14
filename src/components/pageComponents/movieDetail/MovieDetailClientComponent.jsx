@@ -87,7 +87,7 @@ const MovieDetailClientComponent = ({
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
       {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
       {isPlay ? (
-        <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+        <section className="relative w-full min-h-fit lg:min-h-[90vh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
           {/* Full-Bleed Backdrop Image with Cinema Blur */}
           <div className="absolute inset-0 z-0">
             <Image
