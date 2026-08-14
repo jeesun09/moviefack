@@ -120,7 +120,7 @@ const Header = () => {
                 className="w-10 h-10 p-2 border border-primary bg-background/80 rounded-full flex items-center justify-center"
               >
                 <Image
-                 loading="lazy"
+                  loading="eager"
                   src={M}
                   alt="logo"
                   unoptimized
@@ -147,11 +147,10 @@ const Header = () => {
                   >
                     <Link
                       href={menu.href}
-                      className={`text-[15px] px-3.5 py-1.5 font-bold transition-all duration-200 rounded-full block ${
-                        isActive
+                      className={`text-[15px] px-3.5 py-1.5 font-bold transition-all duration-200 rounded-full block ${isActive
                           ? "text-primary bg-background/90 border border-primary/30 shadow-[0_0_15px_rgba(255,59,48,0.3)]"
                           : "text-text hover:text-primary hover:bg-background/80"
-                      }`}
+                        }`}
                     >
                       {menu.name}
                     </Link>
@@ -196,7 +195,7 @@ const Header = () => {
             className="w-25 h-full py-1 px-2 rounded-full bg-background flex items-center justify-center"
           >
             <Image
-             loading="lazy"
+              loading="eager"
               src={LOGO}
               alt="logo"
               unoptimized
@@ -296,11 +295,10 @@ const Header = () => {
                       <Link
                         href={menu.href}
                         onClick={() => setMenuOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 transition-colors group ${
-                          isActive
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors group ${isActive
                             ? "bg-primary/10 border-l-2 border-primary"
                             : "hover:bg-white/5"
-                        }`}
+                          }`}
                       >
                         <Icon
                           className={`w-4 h-4 transition-colors ${isActive ? "text-primary" : "text-text-muted group-hover:text-primary"}`}

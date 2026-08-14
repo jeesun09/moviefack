@@ -59,7 +59,7 @@ export default function PageInitialLoader() {
             {/* Brand Logo */}
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-3 shadow-[0_0_30px_rgba(255,59,48,0.35)]">
               <Image
-                loading="lazy"
+                loading="eager"
                 src={M}
                 alt="Logo"
                 unoptimized
