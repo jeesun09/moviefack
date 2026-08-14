@@ -87,7 +87,7 @@ const MovieDetailClientComponent = ({
     <div className="relative min-h-screen w-full bg-background text-text overflow-hidden">
       {/* ── FULL WIDTH HERO DETAILS BANNER ── */}
       {isPlay ? (
-        <section className="relative w-full min-h-fit lg:min-h-[90vh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
+        <section className="relative w-full min-h-fit lg:min-h-[90dvh] flex flex-col justify-end pt-28 pb-16 px-4 sm:px-8 lg:px-12">
           {/* Full-Bleed Backdrop Image with Cinema Blur */}
           <div className="absolute inset-0 z-0">
             <Image
@@ -102,12 +102,12 @@ const MovieDetailClientComponent = ({
             <div className="absolute inset-0 bg-radial from-transparent via-black/60 to-black/90" />
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-[1600px]">
+          <div className="relative z-10 mx-auto w-full">
             <div
               className="relative z-10 w-full overflow-hidden rounded-3xl border border-white/15 bg-[#0f0f0f] shadow-[0_25px_80px_rgba(0,0,0,0.9)]"
             >
               {/* Top Bar */}
-              <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+              <div className="flex items-center justify-between border-b border-white/10 lg:px-6 px-4 py-3 lg:py-4">
                 <div className="flex items-center gap-2 w-[85%]">
                   <Film className="h-5 w-5 text-primary" />
                   {titleMain && (
@@ -123,10 +123,10 @@ const MovieDetailClientComponent = ({
                     const q = params.toString();
                     router.push(pathname + (q ? "?" + q : ""));
                   }}
-                  className="rounded-full border border-white/10 bg-white/5 p-2 text-white/70 hover:bg-white/10 hover:text-white transition cursor-pointer"
+                  className="rounded-full border border-white/10 bg-white/5 p-1.5 text-white/70 hover:bg-white/10 hover:text-white transition cursor-pointer"
                   aria-label="Close player"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
 
