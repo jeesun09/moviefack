@@ -198,81 +198,18 @@ const MovieDetailClientComponent = ({
             !controlsVisible ? "cursor-none" : ""
           }`}
         >
-          {/* Top Bar Floating Controls */}
-          <div
-            className={`absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-6 transition-opacity duration-300 ${
+          {/* Top-Left Back Arrow Button (Prominent & Always Accessible on Mobile) */}
+          <button
+            type="button"
+            onClick={handleCloseVideoPlayer}
+            className={`fixed top-4 left-4 z-[100] flex h-10 w-11 items-center justify-center rounded-xl border border-white/20 bg-black/85 text-white backdrop-blur-xl transition duration-200 hover:bg-white/20 hover:border-white/40 cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.8)] active:scale-95 ${
               controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
+            title="Back to Movie (Esc)"
+            aria-label="Back to movie details"
           >
-            {/* Top-Left: Back Arrow Button */}
-            <button
-              onClick={handleCloseVideoPlayer}
-              className="flex h-10 w-11 items-center justify-center rounded-lg border border-white/20 bg-black/75 text-white/90 backdrop-blur-md transition hover:bg-white/10 hover:border-white/40 hover:text-white cursor-pointer shadow-lg"
-              title="Back (Esc)"
-              aria-label="Back to movie details"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-
-            {/* Top-Center: CHANGE SERVER Button & Dropdown */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-4 sm:top-6">
-              <div className="relative">
-                <button
-                  onClick={() => setIsServerOpen((prev) => !prev)}
-                  className="flex items-center gap-2 rounded-lg border border-white/20 bg-black/80 px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:bg-white/10 hover:border-white/40 cursor-pointer shadow-lg"
-                >
-                  <span>CHANGE SERVER</span>
-                  <ChevronDown
-                    className={`h-3.5 w-3.5 text-white/70 transition-transform duration-200 ${
-                      isServerOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {/* Server Dropdown Menu */}
-                {isServerOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-56 overflow-hidden rounded-2xl border border-white/20 bg-[#121212]/95 p-1.5 shadow-[0_15px_50px_rgba(0,0,0,0.95)] backdrop-blur-2xl z-50 text-white">
-                    <div className="px-3 py-1.5 border-b border-white/10 text-[10px] font-bold uppercase tracking-wider text-white/50">
-                      Select Server
-                    </div>
-                    <div className="space-y-1 mt-1">
-                      {MOVIE_SERVERS.map((server) => {
-                        const isSelected = server.id === selectedServer.id;
-                        return (
-                          <button
-                            key={server.id}
-                            onClick={() => {
-                              setSelectedServer(server);
-                              setIsServerOpen(false);
-                              setIframeKey(Date.now());
-                            }}
-                            className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition cursor-pointer ${
-                              isSelected
-                                ? "bg-primary text-white shadow-[0_0_12px_rgba(255,59,48,0.5)]"
-                                : "text-white/80 hover:bg-white/10 hover:text-white"
-                            }`}
-                          >
-                            <div className="text-left">
-                              <p className="leading-tight">{server.name}</p>
-                              <span className="text-[10px] opacity-60">
-                                {server.tag}
-                              </span>
-                            </div>
-                            {isSelected && (
-                              <Check className="h-3.5 w-3.5 shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Spacer for symmetrical balance */}
-            <div className="w-11" />
-          </div>
+            <ArrowLeft className="h-5 w-5" />
+          </button>
 
           {/* Buffering / Preparing Stream Card (Matching Reference Design) */}
           {isLoadingIframe && (
