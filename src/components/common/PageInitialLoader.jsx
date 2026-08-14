@@ -18,7 +18,7 @@ export default function PageInitialLoader() {
           setTimeout(() => setIsVisible(false), 250);
           return 100;
         }
-        // Random natural increment between 2% and 6% for smooth realistic counting
+        // Increment between 3% and 7% for natural, fluid progress
         const next = prev + Math.floor(Math.random() * 5) + 3;
         return next > 100 ? 100 : next;
       });
@@ -27,7 +27,7 @@ export default function PageInitialLoader() {
     return () => clearInterval(interval);
   }, []);
 
-  // Prevent scrolling while loading
+  // Prevent scrolling while initial loading
   useEffect(() => {
     if (isVisible) {
       document.body.style.overflow = "hidden";
@@ -46,7 +46,7 @@ export default function PageInitialLoader() {
           key="simple-counter-loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
           className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-[#080808] text-white select-none"
         >
           {/* Subtle Ambient Red Glow */}
@@ -77,11 +77,13 @@ export default function PageInitialLoader() {
               </span>
             </div>
 
-            {/* Minimal Progress Bar */}
-            <div className="h-1.5 w-48 sm:w-56 overflow-hidden rounded-full bg-white/10 p-0.5 border border-white/10">
-              <div
-                className="h-full rounded-full bg-primary shadow-[0_0_15px_rgba(255,59,48,0.8)] transition-all duration-75 ease-out"
-                style={{ width: `${progress}%` }}
+            {/* Animated Progress Bar using Framer Motion */}
+            <div className="relative h-2 w-52 sm:w-64 overflow-hidden rounded-full bg-white/10 border border-white/15">
+              <motion.div
+                className="h-full rounded-full bg-primary shadow-[0_0_20px_rgba(255,59,48,1)]"
+                initial={{ width: "0%" }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.08, ease: "linear" }}
               />
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function Loading() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 flex flex-col items-center gap-6 text-center">
+      <div className="relative z-10 flex flex-col items-center gap-5 text-center">
         {/* Brand Logo */}
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-3 shadow-[0_0_30px_rgba(255,59,48,0.35)]">
           <Image
@@ -34,9 +34,9 @@ export default function Loading() {
           </p>
         </div>
 
-        {/* Minimal Animated Loading Bar */}
-        <div className="h-1.5 w-48 sm:w-56 overflow-hidden rounded-full bg-white/10 p-0.5 border border-white/10 mt-1">
-          <div className="h-full w-full rounded-full bg-primary animate-pulse shadow-[0_0_15px_rgba(255,59,48,0.8)]" />
+        {/* Active Animated Traveling Progress Bar */}
+        <div className="relative h-1.5 w-52 sm:w-64 overflow-hidden rounded-full bg-white/10 border border-white/15 mt-2">
+          <div className="absolute inset-y-0 w-1/2 rounded-full bg-gradient-to-r from-transparent via-primary to-transparent shadow-[0_0_20px_rgba(255,59,48,1)] animate-loading-bar" />
         </div>
       </div>
     </div>
