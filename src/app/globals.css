@@ -221,6 +221,10 @@ body::before {
     radial-gradient(circle at bottom left, var(--primary), transparent 25%);
   pointer-events: none;
 } */
+section.movie-hero .swiper-wrapper {
+  padding: 0;
+}
+
 .bannerbg {
   background-size: cover;
   background-position: center;
@@ -688,6 +692,30 @@ body::before {
   }
 }
 
+.movie-slider:after,
+.movie-slider:before {
+  content: "";
+  width: 50px;
+  height: 100%;
+  position: absolute;
+}
+
+
+
+.movie-slider:after {
+  background: linear-gradient(to right, #00000000 0%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 100%) 100%);
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.movie-slider:before {
+  background: linear-gradient(to left, #00000000 0%, rgb(0 0 0 / 50%) 50%, rgb(0 0 0 / 100%) 100%);
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -712,6 +740,11 @@ body::before {
     padding-top: 14px;
     padding-bottom: 14px;
   } */
+
+  .movie-slider:after,
+  .movie-slider:before {
+    width: 20px;
+  }
 
   .hero-brand-wrap {
     gap: 12px;

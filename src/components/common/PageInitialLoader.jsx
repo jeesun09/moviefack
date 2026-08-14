@@ -1,66 +1,92 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 import { M } from "@/constants/images";
 
 export default function PageInitialLoader() {
-  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 750);
+    // Smooth 0 to 100% counter timer
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setIsVisible(false), 250);
+          return 100;
+        }
+        // Random natural increment between 2% and 6% for smooth realistic counting
+        const next = prev + Math.floor(Math.random() * 5) + 3;
+        return next > 100 ? 100 : next;
+      });
+    }, 35);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, []);
 
-  return (
-    <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-[#080808] text-text transition-all duration-500 ${
-        loading
-          ? "opacity-100 pointer-events-auto scale-100"
-          : "opacity-0 pointer-events-none scale-105"
-      }`}
-    >
-      {/* Ambient Red Background Glow */}
-      <div
-        className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-[130px] animate-pulse"
-        aria-hidden="true"
-      />
+  // Prevent scrolling while loading
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isVisible]);
 
-      <div className="relative z-10 flex flex-col items-center justify-center text-center gap-5">
-        {/* Animated Logo Container */}
-        <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/40 bg-surface/90 p-4 shadow-[0_0_40px_rgba(255,59,48,0.45)] transition duration-500 animate-[bounce_1.5s_infinite]">
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          key="simple-counter-loader"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-[#080808] text-white select-none"
+        >
+          {/* Subtle Ambient Red Glow */}
           <div
-            className="absolute inset-0 rounded-3xl bg-primary/10 blur-md animate-pulse"
+            className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-[120px]"
             aria-hidden="true"
           />
-          <Image
-            src={M}
-            alt="MUVI logo"
-            unoptimized
-            width={56}
-            height={56}
-            className="h-full w-full object-contain relative z-10"
-          />
-        </div>
 
-        {/* Brand Name & Animated Typography */}
-        <div className="space-y-1">
-          <h2 className="text-2xl font-black tracking-[0.35em] text-white">
-            MUVI
-          </h2>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-white/50 animate-pulse">
-            CINEMA
-          </p>
-        </div>
+          <div className="relative z-10 flex flex-col items-center gap-6 text-center">
+            {/* Brand Logo */}
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/40 bg-surface/90 p-3 shadow-[0_0_30px_rgba(255,59,48,0.35)]">
+              <Image
+                src={M}
+                alt="Logo"
+                unoptimized
+                width={48}
+                height={48}
+                priority
+                className="h-full w-full object-contain drop-shadow-[0_0_10px_rgba(255,59,48,0.7)]"
+              />
+            </div>
 
-        {/* Minimal Animated Loading Bar */}
-        <div className="h-1 w-24 overflow-hidden rounded-full bg-white/10 mt-1">
-          <div className="h-full w-full bg-primary rounded-full animate-pulse" />
-        </div>
-      </div>
-    </div>
+            {/* 0 to 100% Counter Display */}
+            <div className="space-y-1">
+              <span className="text-4xl sm:text-5xl font-black tracking-tight text-white font-mono">
+                {progress}
+                <span className="text-primary text-3xl sm:text-4xl ml-0.5">%</span>
+              </span>
+            </div>
+
+            {/* Minimal Progress Bar */}
+            <div className="h-1.5 w-48 sm:w-56 overflow-hidden rounded-full bg-white/10 p-0.5 border border-white/10">
+              <div
+                className="h-full rounded-full bg-primary shadow-[0_0_15px_rgba(255,59,48,0.8)] transition-all duration-75 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
