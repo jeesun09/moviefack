@@ -161,6 +161,13 @@ button {
   padding-bottom: 18px !important;
 }
 
+/* Active Nav Header styling */
+.activeNav {
+  background-color: rgba(12, 12, 12, 0.88);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
 .section-nav-button {
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
@@ -400,13 +407,14 @@ section.movie-hero .swiper-wrapper {
 }
 
 .hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(20px, 3vw, 42px);
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 .hero-content {
+  width: 100%;
   max-width: 680px;
 }
 

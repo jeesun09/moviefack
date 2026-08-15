@@ -84,6 +84,7 @@ const Header = () => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const [hoveredMenu, setHoveredMenu] = React.useState(null);
   const lastScrollY = React.useRef(0);
 
   React.useEffect(() => {
@@ -109,7 +110,11 @@ const Header = () => {
         <div className="hidden max-w-[1600px] gap-5 md:flex justify-between items-center">
           {/* pill nav */}
           <div
-            className={`flex items-center w-max py-1.5 px-2.5 backdrop-blur-xl gap-5 rounded-full ${isScrolled ? "activeNav" : ""}`}
+            className={`flex items-center w-max py-1.5 px-2.5 backdrop-blur-xl gap-5 rounded-full border transition-all duration-300 shadow-md shadow-black/40 ${
+              isScrolled
+                ? "bg-background/90 border-border/80 shadow-lg shadow-black/60 activeNav"
+                : "bg-background/60 border-white/10"
+            }`}
           >
             <motion.div
               whileHover={{ rotate: 360, scale: 1.1 }}
@@ -134,26 +139,43 @@ const Header = () => {
               variants={navContainer}
               initial="hidden"
               animate="show"
-              className="flex items-center gap-3"
+              className="flex items-center gap-1 relative"
+              onMouseLeave={() => setHoveredMenu(null)}
             >
               {menus.map((menu) => {
                 const isActive = pathname === menu.href;
+                const isHovered = hoveredMenu === menu.href;
+                const isTargeted = hoveredMenu ? isHovered : isActive;
+
                 return (
                   <motion.div
                     key={menu.name}
                     variants={navItem}
-                    whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.95 }}
+                    onMouseEnter={() => setHoveredMenu(menu.href)}
+                    className="relative"
                   >
                     <Link
                       href={menu.href}
-                      className={`text-[15px] px-3.5 py-1.5 font-bold transition-all duration-200 rounded-full block ${isActive
-                          ? "text-primary bg-background/90 border border-primary/30 shadow-[0_0_15px_rgba(255,59,48,0.3)]"
-                          : "text-text hover:text-primary hover:bg-background/80"
-                        }`}
+                      className={`relative z-10 text-[15px] px-3.5 py-1.5 font-bold transition-colors duration-200 rounded-full block ${
+                        isTargeted
+                          ? "text-primary"
+                          : "text-text/80 hover:text-text"
+                      }`}
                     >
                       {menu.name}
                     </Link>
+                    {isTargeted && (
+                      <motion.div
+                        layoutId="activeNavBackground"
+                        className="absolute inset-0 bg-background/90 border border-primary/30 rounded-full shadow-[0_0_15px_rgba(255,59,48,0.3)] z-0"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
                   </motion.div>
                 );
               })}
@@ -161,7 +183,11 @@ const Header = () => {
           </div>
           {/* action buttons */}
           <div
-            className={`flex items-center py-1.5 px-2.5 backdrop-blur-xl gap-2 rounded-full ${isScrolled ? "activeNav" : ""}`}
+            className={`flex items-center py-1.5 px-2.5 backdrop-blur-xl gap-2 rounded-full border transition-all duration-300 shadow-md shadow-black/40 ${
+              isScrolled
+                ? "bg-background/90 border-border/80 shadow-lg shadow-black/60 activeNav"
+                : "bg-background/60 border-white/10"
+            }`}
           >
             <motion.button
               onClick={() => setSearchOpen(true)}
@@ -188,7 +214,11 @@ const Header = () => {
 
         {/* ── Mobile top bar ── */}
         <div
-          className={`flex md:hidden items-stretch justify-between w-full py-1.5 px-2 backdrop-blur-xl gap-5 rounded-full transition-colors duration-300 ${isScrolled ? "bg-background/40" : "bg-background/20"}`}
+          className={`flex md:hidden items-stretch justify-between w-full py-1.5 px-2 backdrop-blur-xl gap-5 rounded-full border transition-all duration-300 shadow-md shadow-black/40 ${
+            isScrolled
+              ? "bg-background/90 border-border/80 shadow-lg shadow-black/60 activeNav"
+              : "bg-background/60 border-white/10"
+          }`}
         >
           <Link
             href="/"

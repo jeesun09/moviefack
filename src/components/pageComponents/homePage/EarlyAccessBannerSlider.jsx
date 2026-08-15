@@ -116,7 +116,7 @@ export default function EarlyAccessBannerSlider({
               return (
                 <SwiperSlide
                   key={`early-${movie.id}`}
-                  className="!w-[160px] sm:!w-[190px] md:!w-[210px] select-none"
+                  className="!w-[145px] min-[400px]:!w-[160px] sm:!w-[190px] md:!w-[210px] select-none"
                 >
                   <Link
                     href={`/movie/${movie.id}`}

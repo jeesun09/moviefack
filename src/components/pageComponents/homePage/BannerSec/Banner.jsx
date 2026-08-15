@@ -335,8 +335,8 @@ const Banner = () => {
 
                 {/* CONTENT */}
 
-                <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-12 pt-22 sm:px-10 sm:pb-10 lg:px-20 lg:pt-15 lg:pb-15">
-                  <div className="hero-grid mt-auto">
+                <div className="hero-shell relative z-5 mx-auto flex h-full w-full flex-col px-5 pb-10 pt-22 sm:px-10 sm:pb-10 lg:px-16 lg:pt-24 lg:pb-14">
+                  <div className="hero-grid mt-auto w-full max-w-full lg:max-w-[52%] xl:max-w-[55%]">
                     <div
                       className="hero-content"
                       data-content
@@ -429,7 +429,7 @@ const Banner = () => {
 
                       {/* ACTIONS */}
 
-                      <div className="hero-actions flex items-center gap-3">
+                      <div className="hero-actions flex flex-wrap items-center gap-3">
                         <Button
                           icon={PlayCircleIcon}
                           iconPosition="right"
@@ -464,7 +464,7 @@ const Banner = () => {
               THUMBNAIL SLIDER
           ==================================== */}
 
-        <aside className="hero-side absolute bottom-0 right-4 z-20 hidden xxl:w-[50%] lg:w-[50%] md:w-[40%] md:bottom-6 md:block">
+        <aside className="hero-side absolute bottom-6 right-4 lg:right-12 z-20 hidden lg:block w-full max-w-[44%] xl:max-w-[42%] 2xl:max-w-[38%]">
           <Swiper
             modules={[
               FreeMode,
@@ -506,25 +506,19 @@ const Banner = () => {
               }
             }}
             spaceBetween={14}
-            slidesPerView={4}
+            slidesPerView={3}
             breakpoints={{
-              420: {
+              1024: {
                 slidesPerView: 2,
+                spaceBetween: 10,
               },
-
-              640: {
-                slidesPerView: 2,
-              },
-
-              900: {
-                slidesPerView: 2,
-              },
-
-              1200: {
+              1280: {
                 slidesPerView: 3,
+                spaceBetween: 12,
               },
-              1400: {
+              1536: {
                 slidesPerView: 4,
+                spaceBetween: 14,
               },
             }}
           >

@@ -143,10 +143,10 @@ export default function SeriesPageComponent() {
   // Client-side quick search filtering
   const displayedSeries = searchQuery.trim()
     ? series.filter((m) =>
-        (m.titleMain || m.name || m.title || "")
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()),
-      )
+      (m.titleMain || m.name || m.title || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    )
     : series;
 
   return (
@@ -209,11 +209,10 @@ export default function SeriesPageComponent() {
               key={lang.code}
               type="button"
               onClick={() => setActiveLanguage(lang.code)}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 cursor-pointer ${
-                activeLanguage === lang.code
+              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 cursor-pointer ${activeLanguage === lang.code
                   ? "bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.5)] scale-105"
                   : "border border-white/10 bg-surface/80 text-white/70 hover:border-white/25 hover:text-white hover:bg-white/10"
-              }`}
+                }`}
             >
               <span>{lang.flag}</span>
               <span>{lang.name}</span>
@@ -234,11 +233,10 @@ export default function SeriesPageComponent() {
               key={genre.id}
               type="button"
               onClick={() => setActiveGenre(genre.genreId)}
-              className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer ${
-                activeGenre === genre.genreId
+              className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer ${activeGenre === genre.genreId
                   ? "bg-white text-black font-bold shadow-[0_0_20px_rgba(255,255,255,0.4)] scale-105"
                   : "border border-white/10 bg-surface/80 text-white/70 hover:border-white/25 hover:text-white hover:bg-white/10"
-              }`}
+                }`}
             >
               {genre.name}
             </button>
@@ -248,14 +246,14 @@ export default function SeriesPageComponent() {
 
       {/* ── Series Cards Grid ── */}
       {isInitialLoading ? (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
           {Array.from({ length: 18 }).map((_, idx) => (
             <MovieCardSkeleton key={`init-series-skel-${idx}`} />
           ))}
         </div>
       ) : displayedSeries.length > 0 ? (
         <div className="space-y-10">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
             {displayedSeries.map((item, idx) => (
               <MovieCard
                 key={`${item.id}-${idx}`}
@@ -266,7 +264,7 @@ export default function SeriesPageComponent() {
 
           {/* Loading More Rows Skeleton */}
           {isLoadingMore && (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6 pt-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6 pt-4">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <MovieCardSkeleton key={`more-series-skel-${idx}`} />
               ))}

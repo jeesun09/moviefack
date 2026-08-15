@@ -129,7 +129,7 @@ export default function CinemaHeroCarousel({
                       </span>
                     </div>
 
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-none">
+                    <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight sm:leading-none">
                       {titleMain}
                     </h2>
 

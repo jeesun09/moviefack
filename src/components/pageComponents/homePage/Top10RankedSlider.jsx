@@ -104,16 +104,16 @@ export default function Top10RankedSlider({
           return (
             <SwiperSlide
               key={`top10-${movie.id}`}
-              className="!w-[240px] sm:!w-[270px] md:!w-[290px] select-none"
+              className="!w-[210px] min-[400px]:!w-[240px] sm:!w-[270px] md:!w-[290px] select-none"
             >
               <Link
                 href={`/movie/${movie.id}`}
-                className="group relative flex items-end h-[340px] sm:h-[380px] w-full"
+                className="group relative flex items-end h-[300px] sm:h-[380px] w-full"
               >
                 {/* Giant Stylized Rank Number */}
                 <div className="absolute left-0 bottom-0 z-0 select-none">
                   <span
-                    className="text-[140px] sm:text-[170px] font-black leading-none tracking-tighter text-transparent"
+                    className="text-[115px] min-[400px]:text-[140px] sm:text-[170px] font-black leading-none tracking-tighter text-transparent"
                     style={{
                       WebkitTextStroke: "3px rgba(255, 255, 255, 0.28)",
                       textShadow: "0 0 25px rgba(255, 59, 48, 0.4)",
@@ -124,7 +124,7 @@ export default function Top10RankedSlider({
                 </div>
 
                 {/* Poster Card overlapping number */}
-                <div className="relative z-10 ml-auto aspect-[2/3] w-[170px] sm:w-[195px] md:w-[210px] overflow-hidden rounded-2xl border border-white/15 bg-surface shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 group-hover:border-primary group-hover:shadow-[0_20px_50px_rgba(255,59,48,0.35)]">
+                <div className="relative z-10 ml-auto aspect-[2/3] w-[145px] min-[400px]:w-[170px] sm:w-[195px] md:w-[210px] overflow-hidden rounded-2xl border border-white/15 bg-surface shadow-[0_15px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 group-hover:border-primary group-hover:shadow-[0_20px_50px_rgba(255,59,48,0.35)]">
                   <Image
                    loading="lazy"
                     src={poster}

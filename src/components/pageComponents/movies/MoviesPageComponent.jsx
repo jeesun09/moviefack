@@ -257,14 +257,14 @@ export default function MoviesPageComponent() {
 
       {/* ── Movie Cards Grid ── */}
       {isInitialLoading ? (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
           {Array.from({ length: 18 }).map((_, idx) => (
             <MovieCardSkeleton key={`init-skel-${idx}`} />
           ))}
         </div>
       ) : displayedMovies.length > 0 ? (
         <div className="space-y-10">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
             {displayedMovies.map((movie, idx) => (
               <MovieCard
                 key={`${movie.id}-${idx}`}
@@ -275,7 +275,7 @@ export default function MoviesPageComponent() {
 
           {/* Loading More Rows Skeleton */}
           {isLoadingMore && (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6 pt-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6 pt-4">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <MovieCardSkeleton key={`more-skel-${idx}`} />
               ))}

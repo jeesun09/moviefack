@@ -100,7 +100,7 @@ export default function WideBackdropSeriesSlider({
           return (
             <SwiperSlide
               key={`wide-${item.id}`}
-              className="!w-[280px] sm:!w-[320px] md:!w-[350px] lg:!w-[370px] select-none"
+              className="!w-[240px] min-[400px]:!w-[280px] sm:!w-[320px] md:!w-[350px] lg:!w-[370px] select-none"
             >
               <Link
                 href={`/series/${item.id}`}

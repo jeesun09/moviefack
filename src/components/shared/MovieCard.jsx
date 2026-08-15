@@ -41,7 +41,7 @@ const MovieCard = ({ movie = {} }) => {
   return (
     <Link href={targetHref} className="block">
       <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-surface shadow-[0_18px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-[0_24px_80px_rgba(0,0,0,0.32)] cursor-pointer">
-        <div className="relative xxl:min-h-110.25 xl:h-105 lg:h-100 md:h-90 h-70 overflow-hidden rounded-[28px] bg-white/5">
+        <div className="relative h-[310px] sm:h-[350px] md:h-[380px] lg:h-[400px] overflow-hidden rounded-[28px] bg-white/5">
           <Image
             height={500}
             width={500}
