@@ -54,9 +54,10 @@ const SearchModal = ({ isOpen, onClose }) => {
     }
 
     setIsSearching(true);
+    const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const data = await searchMovies(query);
+        const data = await searchMovies(query, controller);
         setResults(data || []);
       } catch (err) {
         console.error("Search error:", err);
@@ -65,7 +66,7 @@ const SearchModal = ({ isOpen, onClose }) => {
       }
     }, 350);
 
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(timer), controller.abort()};
   }, [query]);
 
   return (

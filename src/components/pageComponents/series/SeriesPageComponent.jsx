@@ -66,10 +66,14 @@ export default function SeriesPageComponent() {
   const [totalCount, setTotalCount] = useState(0);
 
   const observerTarget = useRef(null);
+  const abortControllerRef = useRef(null);
 
   // Fetch series function
   const fetchSeriesData = useCallback(
     async (pageToFetch, isNewFilter = false) => {
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
       if (isNewFilter) {
         setIsInitialLoading(true);
       } else {
@@ -84,7 +88,9 @@ export default function SeriesPageComponent() {
           page: String(pageToFetch),
         });
 
-        const res = await fetch(`/api/series?${queryParams.toString()}`);
+        const res = await fetch(`/api/series?${queryParams.toString()}`, {
+          signal: controller.signal,
+        });
         if (!res.ok) throw new Error("Failed to fetch series");
 
         const data = await res.json();
@@ -94,10 +100,13 @@ export default function SeriesPageComponent() {
         setTotalCount(data.totalResults || results.length);
         setHasMore(data.page < data.totalPages && results.length > 0);
       } catch (error) {
+        if (error.name === "AbortError") return;
         console.error("Error fetching series:", error);
       } finally {
-        setIsInitialLoading(false);
-        setIsLoadingMore(false);
+        if (!controller.signal.aborted) {
+          setIsInitialLoading(false);
+          setIsLoadingMore(false);
+        }
       }
     },
     [activeGenre, activeLanguage, sortBy],
@@ -143,11 +152,17 @@ export default function SeriesPageComponent() {
   // Client-side quick search filtering
   const displayedSeries = searchQuery.trim()
     ? series.filter((m) =>
-      (m.titleMain || m.name || m.title || "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()),
-    )
+        (m.titleMain || m.name || m.title || "")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()),
+      )
     : series;
+  
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, [])
 
   return (
     <div className="min-h-screen w-full bg-background lg:pt-36 pt-24 pb-28 text-text px-4 sm:px-8 lg:px-12 max-w-[1720px] mx-auto">
@@ -163,7 +178,9 @@ export default function SeriesPageComponent() {
           Trending TV Series & Originals
         </h1>
         <p className="max-w-3xl text-xs sm:text-sm text-white/60 leading-relaxed">
-          Binge-watch award-winning original dramas, addictive suspense series, Korean K-dramas, Japanese anime series, and Bengali detective web originals.
+          Binge-watch award-winning original dramas, addictive suspense series,
+          Korean K-dramas, Japanese anime series, and Bengali detective web
+          originals.
         </p>
       </div>
 
@@ -184,7 +201,9 @@ export default function SeriesPageComponent() {
         {/* Sort & Stats */}
         <div className="flex items-center justify-between md:justify-end gap-4">
           <span className="text-xs text-white/50 font-medium">
-            Loaded: <strong className="text-white">{displayedSeries.length}</strong> {totalCount > 0 ? `of ${totalCount.toLocaleString()}+` : "shows"}
+            Loaded:{" "}
+            <strong className="text-white">{displayedSeries.length}</strong>{" "}
+            {totalCount > 0 ? `of ${totalCount.toLocaleString()}+` : "shows"}
           </span>
 
           <CustomDropdown
@@ -209,10 +228,11 @@ export default function SeriesPageComponent() {
               key={lang.code}
               type="button"
               onClick={() => setActiveLanguage(lang.code)}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 cursor-pointer ${activeLanguage === lang.code
+              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 cursor-pointer ${
+                activeLanguage === lang.code
                   ? "bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.5)] scale-105"
                   : "border border-white/10 bg-surface/80 text-white/70 hover:border-white/25 hover:text-white hover:bg-white/10"
-                }`}
+              }`}
             >
               <span>{lang.flag}</span>
               <span>{lang.name}</span>
@@ -233,10 +253,11 @@ export default function SeriesPageComponent() {
               key={genre.id}
               type="button"
               onClick={() => setActiveGenre(genre.genreId)}
-              className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer ${activeGenre === genre.genreId
+              className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer ${
+                activeGenre === genre.genreId
                   ? "bg-white text-black font-bold shadow-[0_0_20px_rgba(255,255,255,0.4)] scale-105"
                   : "border border-white/10 bg-surface/80 text-white/70 hover:border-white/25 hover:text-white hover:bg-white/10"
-                }`}
+              }`}
             >
               {genre.name}
             </button>
@@ -255,10 +276,7 @@ export default function SeriesPageComponent() {
         <div className="space-y-10">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
             {displayedSeries.map((item, idx) => (
-              <MovieCard
-                key={`${item.id}-${idx}`}
-                movie={item}
-              />
+              <MovieCard key={`${item.id}-${idx}`} movie={item} />
             ))}
           </div>
 
@@ -272,7 +290,10 @@ export default function SeriesPageComponent() {
           )}
 
           {/* Scroll Down Infinite Sentinel Trigger */}
-          <div ref={observerTarget} className="h-10 w-full flex items-center justify-center">
+          <div
+            ref={observerTarget}
+            className="h-10 w-full flex items-center justify-center"
+          >
             {isLoadingMore && (
               <div className="flex items-center gap-2 text-xs text-white/60 font-semibold">
                 <RefreshCw className="h-4 w-4 animate-spin text-primary" />
@@ -291,7 +312,8 @@ export default function SeriesPageComponent() {
           <Tv className="h-12 w-12 text-white/20 mx-auto" />
           <h3 className="text-lg font-bold text-white">No Series Found</h3>
           <p className="text-xs text-white/50 max-w-sm mx-auto">
-            We couldn't find any series matching the selected combination of genre and language.
+            We couldn't find any series matching the selected combination of
+            genre and language.
           </p>
           <button
             type="button"

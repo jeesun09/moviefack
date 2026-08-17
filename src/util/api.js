@@ -355,7 +355,7 @@ export const getSeries = async () => {
   return getTvShows(10759); // Action & Adventure Series
 };
 
-export const searchMovies = async (query) => {
+export const searchMovies = async (query, controller) => {
   if (!query || !query.trim()) return [];
   try {
     const apiKey = getCleanKey();
@@ -367,7 +367,7 @@ export const searchMovies = async (query) => {
     const headers = { "Content-Type": "application/json" };
     if (token && !apiKey) headers.Authorization = `Bearer ${token}`;
 
-    const res = await fetch(url.toString(), { cache: "no-store" });
+    const res = await fetch(url.toString(), { cache: "no-store", signal: controller.signal });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data?.results) && data.results.length) {
@@ -375,7 +375,8 @@ export const searchMovies = async (query) => {
       }
     }
   } catch (error) {
-    console.error("searchMovies error:", error);
+    if (error.name === "AbortError") return [];
+      console.log("searchMovies error:", error);
   }
   return fallbackMovies
     .filter((m) =>

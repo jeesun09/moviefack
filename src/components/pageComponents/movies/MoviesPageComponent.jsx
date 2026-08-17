@@ -75,10 +75,15 @@ export default function MoviesPageComponent() {
   const [totalCount, setTotalCount] = useState(0);
 
   const observerTarget = useRef(null);
+  const abortControllerRef = useRef(null);
 
   // Fetch movies function
   const fetchMoviesData = useCallback(
     async (pageToFetch, isNewFilter = false) => {
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
       if (isNewFilter) {
         setIsInitialLoading(true);
       } else {
@@ -93,7 +98,9 @@ export default function MoviesPageComponent() {
           page: String(pageToFetch),
         });
 
-        const res = await fetch(`/api/movies?${queryParams.toString()}`);
+        const res = await fetch(`/api/movies?${queryParams.toString()}`, {
+          signal: controller.signal,
+        });
         if (!res.ok) throw new Error("Failed to fetch movies");
 
         const data = await res.json();
@@ -103,10 +110,13 @@ export default function MoviesPageComponent() {
         setTotalCount(data.totalResults || results.length);
         setHasMore(data.page < data.totalPages && results.length > 0);
       } catch (error) {
+        if (error.name === "AbortError") return;
         console.error("Error fetching movies:", error);
       } finally {
-        setIsInitialLoading(false);
-        setIsLoadingMore(false);
+        if (!controller.signal.aborted) {
+          setIsInitialLoading(false);
+          setIsLoadingMore(false);
+        }
       }
     },
     [activeGenre, activeLanguage, sortBy],
@@ -158,6 +168,12 @@ export default function MoviesPageComponent() {
       )
     : movies;
 
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
+
   return (
     <div className="min-h-screen w-full bg-background lg:pt-36 pt-24 pb-28 text-text px-4 sm:px-8 lg:px-12 max-w-[1720px] mx-auto">
       {/* ── Page Header Banner ── */}
@@ -172,7 +188,9 @@ export default function MoviesPageComponent() {
           Explore All Movies
         </h1>
         <p className="max-w-3xl text-xs sm:text-sm text-white/60 leading-relaxed">
-          Browse through unlimited blockbusters, regional cinema masterpieces, award-winning international hits, and upcoming premieres across all genres and languages.
+          Browse through unlimited blockbusters, regional cinema masterpieces,
+          award-winning international hits, and upcoming premieres across all
+          genres and languages.
         </p>
       </div>
 
@@ -193,7 +211,9 @@ export default function MoviesPageComponent() {
         {/* Sort & Stats */}
         <div className="flex items-center justify-between md:justify-end gap-4">
           <span className="text-xs text-white/50 font-medium">
-            Loaded: <strong className="text-white">{displayedMovies.length}</strong> {totalCount > 0 ? `of ${totalCount.toLocaleString()}+` : "movies"}
+            Loaded:{" "}
+            <strong className="text-white">{displayedMovies.length}</strong>{" "}
+            {totalCount > 0 ? `of ${totalCount.toLocaleString()}+` : "movies"}
           </span>
 
           <CustomDropdown
@@ -266,10 +286,7 @@ export default function MoviesPageComponent() {
         <div className="space-y-10">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 xxl:grid-cols-6 sm:gap-6">
             {displayedMovies.map((movie, idx) => (
-              <MovieCard
-                key={`${movie.id}-${idx}`}
-                movie={movie}
-              />
+              <MovieCard key={`${movie.id}-${idx}`} movie={movie} />
             ))}
           </div>
 
@@ -283,7 +300,10 @@ export default function MoviesPageComponent() {
           )}
 
           {/* Scroll Down Infinite Sentinel Trigger */}
-          <div ref={observerTarget} className="h-10 w-full flex items-center justify-center">
+          <div
+            ref={observerTarget}
+            className="h-10 w-full flex items-center justify-center"
+          >
             {isLoadingMore && (
               <div className="flex items-center gap-2 text-xs text-white/60 font-semibold">
                 <RefreshCw className="h-4 w-4 animate-spin text-primary" />
@@ -302,7 +322,8 @@ export default function MoviesPageComponent() {
           <Film className="h-12 w-12 text-white/20 mx-auto" />
           <h3 className="text-lg font-bold text-white">No Movies Found</h3>
           <p className="text-xs text-white/50 max-w-sm mx-auto">
-            We couldn't find any movies matching the selected combination of genre and language.
+            We couldn't find any movies matching the selected combination of
+            genre and language.
           </p>
           <button
             type="button"
