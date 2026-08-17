@@ -28,6 +28,9 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ShareFloatingMenu from "@/components/common/ShareFloatingMenu";
+import { List, useDynamicRowHeight } from "react-window";
+import SeriesEpisodeListItem from "./SeriesEpisodeListItem";
+import DrawerEpisodeListItem from "./DrawerEpisodeListItem";
 
 const TV_SERVERS = [
   {
@@ -41,7 +44,8 @@ const TV_SERVERS = [
     id: "autoembed",
     name: "Server 2 (AutoEmbed)",
     tag: "HD 1080p",
-    getUrl: (id, s, e) => `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}`,
+    getUrl: (id, s, e) =>
+      `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}`,
   },
   {
     id: "superembed",
@@ -100,6 +104,11 @@ const SeriesDetailClientComponent = ({
   const [shareToast, setShareToast] = useState(false);
   const { addToWishlist, isMovieInWishlist } = useAuth();
   const isSaved = isMovieInWishlist(series.id);
+
+  // Dynamic row height of episode list
+  const rowHeight = useDynamicRowHeight({
+    defaultRowHeight: 150,
+  });
 
   // Sync selectedSeason with season query param
   useEffect(() => {
@@ -325,7 +334,9 @@ const SeriesDetailClientComponent = ({
       return a.episode_number - b.episode_number;
     });
 
-  const currentPlayingSeason = seasonParam ? Number(seasonParam) : selectedSeason;
+  const currentPlayingSeason = seasonParam
+    ? Number(seasonParam)
+    : selectedSeason;
   const currentPlayingEpisode = episodeParam ? Number(episodeParam) : 1;
 
   return (
@@ -333,15 +344,18 @@ const SeriesDetailClientComponent = ({
       {/* ── 100% FULL-SCREEN SERIES CINEMA PLAYER WITH EPISODES DRAWER ── */}
       {isPlaying && (
         <div
-          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${!controlsVisible && !isDrawerOpen ? "cursor-none" : ""
-            }`}
+          className={`fixed inset-0 z-[99999] h-screen w-screen min-h-[100dvh] max-h-[100dvh] bg-black overflow-hidden flex flex-col justify-between select-none ${
+            !controlsVisible && !isDrawerOpen ? "cursor-none" : ""
+          }`}
         >
           {/* Top-Left Back Arrow Button (Prominent & Always Accessible on Mobile) */}
           <button
             type="button"
             onClick={handleClosePlayer}
             className={`fixed top-4 left-4 z-[100] flex h-10 w-11 items-center justify-center rounded-xl border border-white/20 bg-black/85 text-white backdrop-blur-xl transition duration-200 hover:bg-white/20 hover:border-white/40 cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.8)] active:scale-95 ${
-              controlsVisible || isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              controlsVisible || isDrawerOpen
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"
             }`}
             title="Back to Series (Esc)"
             aria-label="Back to series details"
@@ -360,9 +374,14 @@ const SeriesDetailClientComponent = ({
               e.stopPropagation();
               setIsDrawerOpen((prev) => !prev);
             }}
-            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:bg-white/20 hover:border-white/45 cursor-grab active:cursor-grabbing ${isDrawerOpen ? "ring-2 ring-primary/60" : ""
-              }`}
-            title={isDrawerOpen ? "Hide Episodes Drawer (Draggable)" : "Show Episodes Drawer (Draggable)"}
+            className={`absolute left-5 top-1/2 -translate-y-1/2 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-black/85 text-white shadow-[0_0_25px_rgba(0,0,0,0.9)] backdrop-blur-xl transition hover:bg-white/20 hover:border-white/45 cursor-grab active:cursor-grabbing ${
+              isDrawerOpen ? "ring-2 ring-primary/60" : ""
+            }`}
+            title={
+              isDrawerOpen
+                ? "Hide Episodes Drawer (Draggable)"
+                : "Show Episodes Drawer (Draggable)"
+            }
             aria-label="Toggle episodes list"
           >
             <LayoutGrid className="h-4 w-4 text-white pointer-events-none" />
@@ -422,8 +441,9 @@ const SeriesDetailClientComponent = ({
                     >
                       <span>Season {selectedSeason}</span>
                       <ChevronDown
-                        className={`h-3 w-3 text-white/70 transition-transform duration-200 ${inDrawerSeasonOpen ? "rotate-180" : ""
-                          }`}
+                        className={`h-3 w-3 text-white/70 transition-transform duration-200 ${
+                          inDrawerSeasonOpen ? "rotate-180" : ""
+                        }`}
                       />
                     </button>
 
@@ -435,10 +455,11 @@ const SeriesDetailClientComponent = ({
                             <button
                               key={`drawer-season-${num}`}
                               onClick={() => handleSelectSeason(num)}
-                              className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-bold transition cursor-pointer ${isSelected
+                              className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-bold transition cursor-pointer ${
+                                isSelected
                                   ? "bg-primary text-white"
                                   : "text-white/80 hover:bg-white/10"
-                                }`}
+                              }`}
                             >
                               <span>Season {num}</span>
                               {isSelected && <Check className="h-3 w-3" />}
@@ -464,10 +485,11 @@ const SeriesDetailClientComponent = ({
                   {/* Sort Button */}
                   <button
                     onClick={() => setInDrawerSortDesc((prev) => !prev)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-xl border transition shrink-0 cursor-pointer ${inDrawerSortDesc
+                    className={`flex h-8 w-8 items-center justify-center rounded-xl border transition shrink-0 cursor-pointer ${
+                      inDrawerSortDesc
                         ? "border-primary bg-primary/20 text-primary"
                         : "border-white/15 bg-white/5 text-white/70 hover:border-white/30"
-                      }`}
+                    }`}
                     title={inDrawerSortDesc ? "Ascending" : "Descending"}
                   >
                     <ArrowUpDown className="h-3.5 w-3.5" />
@@ -482,65 +504,20 @@ const SeriesDetailClientComponent = ({
                       <span>Loading episodes...</span>
                     </div>
                   ) : drawerEpisodes.length > 0 ? (
-                    drawerEpisodes.map((ep) => {
-                      const isCurrent =
-                        ep.episode_number === currentPlayingEpisode &&
-                        (ep.season_number || selectedSeason) === currentPlayingSeason;
-                      const thumb = ep.still_path
-                        ? `https://image.tmdb.org/t/p/w300${ep.still_path}`
-                        : posterSrc;
-
-                      return (
-                        <div
-                          key={`drawer-ep-${ep.id || ep.episode_number}`}
-                          onClick={() => handlePlayEpisode(ep)}
-                          className={`group relative flex items-center gap-3 rounded-2xl border p-2.5 transition duration-200 cursor-pointer ${isCurrent
-                              ? "border-primary bg-primary/15 shadow-[0_0_15px_rgba(255,59,48,0.35)]"
-                              : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.08]"
-                            }`}
-                        >
-                          {/* Thumbnail Container */}
-                          <div className="relative aspect-video w-24 sm:w-28 shrink-0 overflow-hidden rounded-xl bg-black">
-                            <Image
-                             loading="lazy"
-                              src={thumb}
-                              alt={ep.name}
-                              fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition" />
-
-                            {/* Episode number badge */}
-                            <span className="absolute bottom-1 left-1 rounded-md bg-black/80 px-1.5 py-0.5 text-[9px] font-bold text-white border border-white/10">
-                              {ep.episode_number}
-                            </span>
-
-                            {/* Play Overlay */}
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40">
-                              <Play className="h-4 w-4 text-white fill-white" />
-                            </div>
-                          </div>
-
-                          {/* Episode Details */}
-                          <div className="min-w-0 flex-1 space-y-1">
-                            <div className="flex items-center justify-between gap-1">
-                              <h4
-                                className={`text-xs font-bold truncate leading-tight ${isCurrent ? "text-primary" : "text-white"
-                                  }`}
-                              >
-                                {ep.episode_number}. {ep.name}
-                              </h4>
-                            </div>
-                            <p className="text-[10px] text-white/50 line-clamp-1">
-                              {ep.runtime || "50 min"} • Season {selectedSeason}
-                            </p>
-                            <p className="text-[11px] text-white/60 line-clamp-2 leading-relaxed">
-                              {ep.overview || "Stream this episode in Ultra HD 4K."}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })
+                    <div className="flex flex-col overflow-y-auto max-h-[calc(100vh-200px)]">
+                      <List
+                        rowComponent={DrawerEpisodeListItem}
+                        rowCount={drawerEpisodes.length}
+                        rowHeight={112}
+                        rowProps={{
+                          episodes: drawerEpisodes,
+                          posterSrc: posterSrc,
+                          handlePlayEpisode: handlePlayEpisode,
+                          selectedSeason,
+                          currentPlayingEpisode,
+                        }}
+                      />
+                    </div>
                   ) : (
                     <div className="py-12 text-center text-xs text-white/40">
                       No episodes found.
@@ -567,7 +544,8 @@ const SeriesDetailClientComponent = ({
 
                 {/* Subtitle */}
                 <p className="text-xs text-white/60 -mt-1 font-medium">
-                  Buffering Season {currentPlayingSeason} • Episode {currentPlayingEpisode}
+                  Buffering Season {currentPlayingSeason} • Episode{" "}
+                  {currentPlayingEpisode}
                 </p>
 
                 {/* Animated Red Progress Bar */}
@@ -627,11 +605,10 @@ const SeriesDetailClientComponent = ({
         {/* Full-Bleed Backdrop Image */}
         <div className="absolute inset-0 z-0">
           <Image
-           loading="lazy"
+            loading="lazy"
             src={backdropSrc}
             alt={titleMain}
             fill
-            
             className="object-cover object-center"
           />
           {/* Dark Gradients */}
@@ -711,12 +688,15 @@ const SeriesDetailClientComponent = ({
               {/* Wishlist Button */}
               <button
                 onClick={() => addToWishlist(series)}
-                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${isSaved
+                className={`flex items-center gap-2 rounded-full border px-5 py-3.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                  isSaved
                     ? "border-primary bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.4)]"
                     : "border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-primary hover:bg-primary"
-                  }`}
+                }`}
               >
-                <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
+                <Bookmark
+                  className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`}
+                />
                 <span>{isSaved ? "Saved" : "In My List"}</span>
               </button>
 
@@ -729,7 +709,7 @@ const SeriesDetailClientComponent = ({
           <div className="hidden lg:block lg:col-span-4">
             <div className="relative aspect-[2/3] w-72 ml-auto overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
               <Image
-               loading="lazy"
+                loading="lazy"
                 src={posterSrc}
                 alt={titleMain}
                 fill
@@ -760,15 +740,17 @@ const SeriesDetailClientComponent = ({
               <button
                 type="button"
                 onClick={() => setIsSeasonOpen((prev) => !prev)}
-                className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${isSeasonOpen
+                className={`flex w-full items-center justify-between gap-4 rounded-xl border py-2.5 px-4 text-xs font-bold text-white backdrop-blur-md transition duration-200 cursor-pointer ${
+                  isSeasonOpen
                     ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(255,59,48,0.3)]"
                     : "border-white/15 bg-white/5 hover:border-white/30 hover:bg-white/10"
-                  }`}
+                }`}
               >
                 <span>Season {selectedSeason}</span>
                 <ChevronDown
-                  className={`h-4 w-4 text-white/70 transition-transform duration-300 ${isSeasonOpen ? "rotate-180 text-primary" : ""
-                    }`}
+                  className={`h-4 w-4 text-white/70 transition-transform duration-300 ${
+                    isSeasonOpen ? "rotate-180 text-primary" : ""
+                  }`}
                 />
               </button>
 
@@ -789,10 +771,11 @@ const SeriesDetailClientComponent = ({
                             key={`season-item-${num}`}
                             type="button"
                             onClick={() => handleSelectSeason(num)}
-                            className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 cursor-pointer ${isSelected
+                            className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold transition duration-150 cursor-pointer ${
+                              isSelected
                                 ? "bg-primary text-white shadow-[0_0_15px_rgba(255,59,48,0.4)]"
                                 : "text-white/80 hover:bg-white/10 hover:text-white"
-                              }`}
+                            }`}
                           >
                             <span>Season {num}</span>
                             {isSelected && (
@@ -826,10 +809,11 @@ const SeriesDetailClientComponent = ({
               </span>
               <button
                 onClick={() => setIsSortDesc((prev) => !prev)}
-                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition cursor-pointer ${isSortDesc
+                className={`flex h-10 w-10 items-center justify-center rounded-xl border transition cursor-pointer ${
+                  isSortDesc
                     ? "border-primary bg-primary/20 text-primary"
                     : "border-white/15 bg-white/5 text-white/70 hover:border-white/30 hover:text-white"
-                  }`}
+                }`}
                 title={isSortDesc ? "Sort Ascending" : "Sort Descending"}
               >
                 <ArrowUpDown className="h-4 w-4" />
@@ -843,62 +827,23 @@ const SeriesDetailClientComponent = ({
           {isLoadingEpisodes ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3 text-white/60">
               <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <span className="text-sm font-semibold">Loading Season {selectedSeason} episodes...</span>
+              <span className="text-sm font-semibold">
+                Loading Season {selectedSeason} episodes...
+              </span>
             </div>
           ) : filteredEpisodes.length > 0 ? (
-            filteredEpisodes.map((ep) => {
-              const epThumb = ep.still_path
-                ? `https://image.tmdb.org/t/p/w500${ep.still_path}`
-                : posterSrc;
-
-              return (
-                <div
-                  key={ep.id || ep.episode_number}
-                  onClick={() => handlePlayEpisode(ep)}
-                  className="group relative flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-white/10 bg-surface/50 p-3.5 sm:p-4 backdrop-blur-md transition duration-300 hover:border-white/25 hover:bg-surface/80 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] cursor-pointer"
-                >
-                  {/* Episode Thumbnail */}
-                  <div className="relative aspect-video w-full sm:w-56 shrink-0 overflow-hidden rounded-xl bg-surface">
-                    <Image
-                     loading="lazy"
-                      src={epThumb}
-                      alt={ep.name}
-                      fill
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden" />
-
-                    {/* Episode Number Badge */}
-                    <span className="absolute bottom-2 left-2 rounded-lg bg-black/80 border border-white/10 px-2 py-0.5 text-xs font-bold text-white shadow">
-                      EP {ep.episode_number}
-                    </span>
-
-                    {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 bg-black/40">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-[0_0_20px_rgba(255,59,48,0.7)] transition-transform duration-300 group-hover:scale-110">
-                        <PlayCircle className="h-6 w-6" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Episode Content */}
-                  <div className="flex-1 min-w-0 space-y-1.5">
-                    <div className="flex items-center justify-between gap-4">
-                      <h3 className="text-base sm:text-lg font-bold text-white truncate group-hover:text-primary transition">
-                        {ep.name}
-                      </h3>
-                      <span className="shrink-0 text-xs font-medium text-white/50">
-                        {ep.runtime || "50 min"}
-                      </span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-white/70 line-clamp-2 leading-relaxed">
-                      {ep.overview ||
-                        "Reacher discovers crucial evidence that forces him into an explosive confrontation."}
-                    </p>
-                  </div>
-                </div>
-              );
-            })
+            <div className="max-h-[600px] overflow-y-auto flex flex-col gap-[12px]">
+              <List
+                rowComponent={SeriesEpisodeListItem}
+                rowCount={filteredEpisodes.length}
+                rowHeight={rowHeight}
+                rowProps={{
+                  episodes: filteredEpisodes,
+                  handlePlayEpisode: handlePlayEpisode,
+                  posterSrc: posterSrc,
+                }}
+              />
+            </div>
           ) : (
             <div className="py-16 text-center text-white/50 rounded-2xl border border-white/10 bg-white/[0.02]">
               No episodes found matching your filter query.
@@ -927,7 +872,7 @@ const SeriesDetailClientComponent = ({
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white/10 flex items-center justify-center">
                     {actorPhoto ? (
                       <Image
-                       loading="lazy"
+                        loading="lazy"
                         src={actorPhoto}
                         alt={actor.name}
                         fill
