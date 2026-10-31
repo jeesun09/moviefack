@@ -34,31 +34,11 @@ import DrawerEpisodeListItem from "./DrawerEpisodeListItem";
 
 const TV_SERVERS = [
   {
-    id: "vidking",
-    name: "Server 1 (VidKing)",
+    id: "xpass",
+    name: "Server 2 (xPass)",
     tag: "Ultra Fast",
     getUrl: (id, s, e) =>
-      `https://www.vidking.net/embed/tv/${id}/${s}/${e}?color=e50914&autoPlay=true`,
-  },
-  {
-    id: "autoembed",
-    name: "Server 2 (AutoEmbed)",
-    tag: "HD 1080p",
-    getUrl: (id, s, e) =>
-      `https://player.autoembed.cc/embed/tv/${id}/${s}/${e}`,
-  },
-  {
-    id: "superembed",
-    name: "Server 3 (SuperEmbed)",
-    tag: "Multi-Server",
-    getUrl: (id, s, e) =>
-      `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`,
-  },
-  {
-    id: "vidsrc",
-    name: "Server 4 (VidSrc)",
-    tag: "Backup",
-    getUrl: (id, s, e) => `https://vidsrc.xyz/embed/tv/${id}/${s}-${e}`,
+      `https://play.xpass.top/e/tv/${id}/${s}/${e}?autostart=false`,
   },
 ];
 

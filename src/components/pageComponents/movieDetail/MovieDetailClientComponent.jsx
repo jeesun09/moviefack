@@ -25,29 +25,18 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const MOVIE_SERVERS = [
   {
+    id: "xpass",
+    name: "Server 2 (xPass)",
+    tag: "Ultra Fast",
+    getUrl: (movieId) =>
+      `https://play.xpass.top/e/movie/${movieId}?autostart=false`,
+  },
+  {
     id: "vidking",
     name: "Server 1 (VidKing)",
     tag: "Ultra Fast",
     getUrl: (movieId) =>
       `https://www.vidking.net/embed/movie/${movieId}?color=e50914&autoPlay=true`,
-  },
-  {
-    id: "autoembed",
-    name: "Server 2 (AutoEmbed)",
-    tag: "HD 1080p",
-    getUrl: (movieId) => `https://player.autoembed.cc/embed/movie/${movieId}`,
-  },
-  {
-    id: "superembed",
-    name: "Server 3 (SuperEmbed)",
-    tag: "Multi-Server",
-    getUrl: (movieId) => `https://multiembed.mov/?video_id=${movieId}&tmdb=1`,
-  },
-  {
-    id: "vidsrc",
-    name: "Server 4 (VidSrc)",
-    tag: "Backup",
-    getUrl: (movieId) => `https://vidsrc.xyz/embed/movie/${movieId}`,
   },
 ];
 
